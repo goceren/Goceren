@@ -1,0 +1,70 @@
+﻿@model Resumepage
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Hakkımda Sayfası Oluştur</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="AdminResume" asp-action="Create" method="post" enctype="multipart/form-data">
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="ResumepageTitle">Sayfa Başlığı</label>
+                            <input asp-for="ResumepageTitle" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="ResumepageTitle"></span>                        
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Subtitle">Alt Başlık</label>
+                            <input asp-for="Subtitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="Subtitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LeftTopTitle">Eğitim Bilgileri Başlığı</label>
+                            <input asp-for="LeftTopTitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="LeftTopTitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LeftBottomTitle">Tecrübe Bilgileri Başlığı</label>
+                            <input asp-for="LeftBottomTitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="LeftBottomTitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="RightTopTitle">Yetenek Bilgileri Başlığı</label>
+                            <input asp-for="RightTopTitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="RightTopTitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="AdminResume" asp-action="Index" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+

@@ -1,0 +1,63 @@
+﻿@model Menu
+@{
+    ViewData["Title"] = "EditMenu";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Menu Güncelle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="AdminNavbar" asp-action="EditMenu" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MenuId" />
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="MenuName">Menü Başlığı</label>
+                            <input asp-for="MenuName" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="MenuName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MenuLink">Menü Link</label>
+                            <input asp-for="MenuLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="MenuLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Menü Tipi</label>
+                            <select asp-for="MenuTypeId" asp-items="ViewBag.menutypes" class="form-control">
+                            </select>
+                            <span class="text-danger" asp-validation-for="MenuTypeId"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="AdminNavbar" asp-action="Menues" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+
+

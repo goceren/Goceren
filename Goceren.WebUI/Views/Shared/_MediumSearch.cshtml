@@ -1,0 +1,20 @@
+﻿<form asp-controller="Medium" asp-action="Index" method="get">
+    <div class="fields clearfix">
+        <div class="left-column">
+            <div class="form-group form-group-with-icon">
+                <input id="aranan" type="text" name="search" class="form-control" 
+                       placeholder="@if (ViewBag.search == null)
+                {
+                    @: Aramayı Enter kullanarak yapınız.
+                }
+                else
+                {
+                    @: @ViewBag.search
+                }"
+                autocomplete="off">
+                <div class="form-control-border"></div>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+    </div>
+</form>

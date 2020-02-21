@@ -1,0 +1,202 @@
+﻿@model IEnumerable<Social>
+@{
+    ViewData["Title"] = "Social";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Sosyal Medya</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    if (ViewBag.alert)
+    {
+        if (ViewBag.items < 1)
+        {
+            <div class="alert alert-danger">
+                En az 1 <b>Aktif Sosyal Medya</b> ayarı olmalıdır.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                Birden fazla <b>Aktif Sosyal Medya</b> ayarı olmamalıdır.
+            </div>
+        }
+    }
+}
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Sosyal Medya Ayarları</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 10%">
+                            Facebook
+                        </th>
+                        <th style="width: 10%">
+                            Twitter
+                        </th>
+                        <th style="width: 10%">
+                            Instagram
+                        </th>
+                        <th style="width: 10%">
+                            Github
+                        </th>
+                        <th style="width: 10%">
+                            Medium
+                        </th>
+                        <th style="width: 10%">
+                            Linkedin
+                        </th>
+                        <th style="width: 10%">
+                            Email
+                        </th>
+                        <th style="width: 5%" class="text-center">
+                            Durum
+                        </th>
+                        <th class="text-center" style="width: 15%">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="AdminNavbar" asp-action="AddSocial">
+                                <i class="fas fa-plus">
+                                </i>
+                                Yeni Ekle
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a>@item.SocialId</a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.FacebookLink.Length < 15)
+                                        {
+                                            @: @item.FacebookLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.FacebookLink.Substring(item.FacebookLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.TwitterLink.Length < 15)
+                                        {
+                                            @: @item.TwitterLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.TwitterLink.Substring(item.TwitterLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.InstagramLink.Length < 15)
+                                        {
+                                            @: @item.InstagramLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.InstagramLink.Substring(item.InstagramLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.GithubLink.Length < 15)
+                                        {
+                                            @: @item.GithubLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.GithubLink.Substring(item.GithubLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.MediumLink.Length < 15)
+                                        {
+                                            @: @item.MediumLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.MediumLink.Substring(item.MediumLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.LinkedinLink.Length < 15)
+                                        {
+                                            @: @item.LinkedinLink
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.LinkedinLink.Substring(item.LinkedinLink.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.Email.Length < 30)
+                                        {
+                                            @: @item.Email
+                                        }
+                                        else
+                                        {
+                                            @: ...@item.Email.Substring(item.Email.Length - 15)
+                                        }
+                                    </a>
+                                </td>
+                                <td class="project-state">
+                                    @if (item.isApproved)
+                                    {
+                                        <span class="badge badge-success text-center">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger text-center">Pasif</span>
+                                    }
+                                </td>
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-info btn-sm" asp-controller="AdminNavbar" asp-action="EditSocial" asp-route-socialId="@item.SocialId">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="AdminNavbar" asp-action="DeleteSocial" asp-route-socialId="@item.SocialId">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+

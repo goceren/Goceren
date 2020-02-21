@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="tr" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        @if (this.ViewContext.RouteData.Values["controller"].ToString() == "Home")
+        {
+            @: Veli Yavuz Göçeren
+        }
+        else
+        {
+           @this.ViewContext.RouteData.Values["controller"].ToString()  @: | VYG
+        }
+    </title>
+    @await Component.InvokeAsync("Metatags")
+    <link href="~/Site/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Site/css/animate.css" rel="stylesheet" />
+    <link href="~/Site/css/animations.css" rel="stylesheet" />
+    <link href="~/Site/css/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Site/css/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Site/css/main.css" rel="stylesheet" />
+    <script src="~/Site/js/modernizr.custom.js"></script>
+    <script src="~/Site/js/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+    <div class="preloader">
+        <div class="preloader-animation">
+            <div class="preloader-spinner">
+            </div>
+        </div>
+    </div>
+    <div id="page" class="page">
+        @await Component.InvokeAsync("Navbar")
+        <div id="main" class="site-main">
+            <div class="pt-wrapper">
+                    @RenderBody() 
+            </div>
+        </div>
+    </div>
+    <script src="~/Site/js/jquery-2.1.3.min.js"></script>
+    <script src="~/Site/js/bootstrap.min.js"></script>
+    <script src="~/Site/js/pages-switcher.js"></script>
+    <script src="~/Site/js/imagesloaded.pkgd.min.js"></script>
+    <script src="~/Site/js/validator.js"></script>
+    <script src="~/Site/js/jquery.shuffle.min.js"></script>
+    <script src="~/Site/js/masonry.pkgd.min.js"></script>
+    <script src="~/Site/js/owl.carousel.min.js"></script>
+    <script src="~/Site/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Site/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

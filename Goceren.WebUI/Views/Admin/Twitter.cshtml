@@ -1,0 +1,175 @@
+﻿@model IEnumerable<Tweets>
+@{
+    ViewData["Title"] = "Twitter";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Twitter Ayarları</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    if (ViewBag.alert)
+    {
+        if (ViewBag.items < 1)
+        {
+            <div class="alert alert-danger">
+                En az 1 <b>Aktif Twitter</b> olmalıdır.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                Birden fazla <b>Aktif Twitter</b> olmamalıdır.
+            </div>
+        }
+    }
+}
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Ayar Listesi</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 10%">
+                            Başlık
+                        </th>
+                        <th style="width: 10%">
+                            Twitter Kullanıcı Adı
+                        </th>
+                        <th style="width: 10%">
+                            Consumer Key
+                        </th>
+                        <th style="width: 10%">
+                            Consumer Secret
+                        </th>
+                        <th style="width: 10%">
+                            Access Token
+                        </th>
+                        <th style="width: 10%">
+                            Access Token Secret
+                        </th>
+                        <th style="width: 10%; text-align:center;">
+                            Durum
+                        </th>
+                        <th class="text-center" style="width: 10%">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="Admin" asp-action="AddTwitter">
+                                <i class="fas fa-plus">
+                                </i>
+                                Yeni Ekle
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="form-group">
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a>@item.TweetsId</a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.FeedTitle
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.TwitterUsername
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.ConsumerKey.Length < 25)
+                                        {
+                                            @: @item.ConsumerKey
+                                        }
+                                        else
+                                        {
+                                            @: @item.ConsumerKey.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.ConsumerSecret.Length < 25)
+                                        {
+                                            @: @item.ConsumerSecret
+                                        }
+                                        else
+                                        {
+                                            @: @item.ConsumerSecret.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.AccessToken.Length < 25)
+                                        {
+                                            @: @item.AccessToken
+                                        }
+                                        else
+                                        {
+                                            @: @item.AccessToken.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.AccessTokenSecret.Length < 25)
+                                        {
+                                            @: @item.AccessTokenSecret
+                                        }
+                                        else
+                                        {
+                                            @: @item.AccessTokenSecret.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td class="project-state">
+                                    @if (item.isApproved)
+                                    {
+                                        <span class="badge badge-success text-center">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger text-center">Pasif</span>
+                                    }
+                                </td>
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-info btn-sm" asp-controller="Admin" asp-action="EditTwitter" asp-route-twitterId="@item.TweetsId">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteTwitter" asp-route-twitterId="@item.TweetsId">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+

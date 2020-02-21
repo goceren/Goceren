@@ -1,0 +1,75 @@
+﻿@model Homepage
+@{
+    ViewData["Title"] = "AddHomepage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Ekle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="Admin" asp-action="AddHomepage" method="post" enctype="multipart/form-data">
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Title">Sayfa Başlığı</label>
+                            <input asp-for="Title" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="Title"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AboutTop">Hakkımda Üst Kısım</label>
+                            <textarea asp-for="AboutTop" class="form-control" rows="4"></textarea>
+                            <span class="text-danger" asp-validation-for="AboutTop"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AboutBottom">Hakkımda Alt Kısım</label>
+                            <textarea asp-for="AboutBottom" class="form-control" rows="4"></textarea>
+                            <span class="text-danger" asp-validation-for="AboutBottom"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Fotograf ve CV Dosyası</label>
+                            @if (Model != null)
+                            {
+                                <div class="input-group">
+                                    <div class="custom-file mr-3">
+                                        <input type="file" name="file" class="custom-file-input" id="file">
+                                        <label class="custom-file-label" for="exampleInputFile">@Model.AboutImage</label>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" id="fileCV" name="fileCV" class="custom-file-input">
+                                        <label class="custom-file-label" for="exampleInputFile">@Model.CVLink</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>        
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+

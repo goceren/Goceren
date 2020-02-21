@@ -1,0 +1,26 @@
+﻿@model SubtitleAdminModels
+@{
+    ViewData["Title"] = "DeleteHomeSubtitle";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (Model != null && Model.Homepage.Count != 0)
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header">
+                Emin misiniz?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><b>"@Model.SubtitleName"</b> - <b>"@Model.Homepage.First().Title"</b> bağlantısınız silmek istediğinize emin misiniz ? </h5>
+                <p class="card-text"></p>
+                <br />
+                <form class="text-right" asp-controller="Admin" asp-action="DeleteHomeSubtitle" method="post">
+                    <a type="button" class="btn btn-primary mr-2" asp-controller="Admin" asp-action="EditSubtitle" asp-route-subtitleId="@Model.SubtitleId">Vazgeç</a>
+                    <input type="hidden" name="homeId" value="@Model.Homepage.First().HomepageId" />
+                    <input type="hidden" name="subtitleId" value="@Model.SubtitleId" />
+                    <button type="submit" class="btn btn-danger">Silmeyi Onaylıyorum</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

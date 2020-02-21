@@ -1,0 +1,27 @@
+﻿@model Menu
+@{
+    ViewData["Title"] = "DeleteConnections";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@if (Model != null)
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header">
+                Emin misiniz?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><b>"@Model.MenuName"</b> - <b>"@ViewBag.menutype.MenuTypeName"</b> adlı bağlantıyı silmek istediğinizden emin misiniz ? </h5>
+                <p class="card-text"></p>
+                <br />
+                <form class="text-right" asp-controller="AdminNavbar" asp-action="DeleteConnections" method="post">
+                    <a type="button" class="btn btn-primary mr-2" asp-controller="AdminNavbar" asp-action="EditMenuTypes" asp-route-menutypeId="@ViewBag.menutype.MenuTypeId">Vazgeç</a>
+                    <input type="hidden" name="menuId" value="@Model.MenuId" />
+                    <input type="hidden" name="menutypeId" value="@ViewBag.menutype.MenuTypeId" />
+                    <button type="submit" class="btn btn-danger">Silmeyi Onaylıyorum</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

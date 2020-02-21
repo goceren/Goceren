@@ -1,0 +1,77 @@
+﻿@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<div class="card">
+    <div class="card-body register-card-body">
+        <p class="login-box-msg">Üye olmak için formu doldurunuz.</p>
+        <form asp-controller="Account" asp-action="Register" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <span asp-validation-for="Username" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="Username" value="@Model.Username" class="form-control" placeholder="Kullanıcı Adı">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="Email" value="@Model.Email" class="form-control" placeholder="Email">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="Password" value="@Model.Password" class="form-control" placeholder="Şifre">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="RePassword" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="RePassword" value="@Model.RePassword" class="form-control" placeholder="Şifre Tekrar">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Kayıt Ol</button>
+                </div>
+            </div>
+        </form>
+        @*
+            <div class="social-auth-links text-center">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-primary">
+                    <i class="fab fa-facebook mr-2"></i>
+                    Sign up using Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-danger">
+                    <i class="fab fa-google-plus mr-2"></i>
+                    Sign up using Google+
+                </a>
+            </div>
+        *@
+        <div class="row text-center mt-4">
+            <div class="col-12">
+                <a asp-controller="Account" asp-action="Login">Zaten Hesabım Var</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,29 @@
+﻿@model Portfoliopage
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (Model != null)
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header">
+                Emin misiniz?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><b>"@Model.PortfoliopageId"</b> ID'li <b>"@Model.PageTitle"</b> başlıklı öğeyi silmek istediğinizden emin misiniz ? </h5>
+                <p class="card-text"></p>
+                <br />
+                <form class="text-right" asp-controller="AdminPortfolio" asp-action="Delete" method="post">
+                    <a type="button" class="btn btn-primary mr-2" asp-controller="AdminPortfolio" asp-action="Index">Vazgeç</a>
+                    <input type="hidden" name="portfolioId" value="@Model.PortfoliopageId" />
+                    <button type="submit" class="btn btn-danger">Silmeyi Onaylıyorum</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+

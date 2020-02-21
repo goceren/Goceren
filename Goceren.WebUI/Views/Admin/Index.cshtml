@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Homepage>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Anasayfa</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    if (ViewBag.alert)
+    {
+        if (ViewBag.items < 1)
+        {
+            <div class="alert alert-danger">
+                En az 1 <b>Aktif Anasayfa</b> olmalıdır.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                Birden fazla <b>Aktif Anasayfa</b> olmamalıdır.
+            </div>
+        }
+    }
+}
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Sayfalar</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 15%">
+                            Başlık
+                        </th>
+                        <th style="width: 20%">
+                            Hakkımda Üst
+                        </th>
+                        <th style="width: 20%">
+                            Hakkımda Alt
+                        </th>
+                        <th style="width: 10%">
+                            Resim Yolu
+                        </th>
+                        <th style="width: 10%">
+                            CV Dosya Adı
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Durum
+                        </th>
+                        <th class="text-center" style="width: 15%">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="Admin" asp-action="AddHomepage">
+                                <i class="fas fa-plus">
+                                </i>
+                                Yeni Ekle
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a>@item.HomepageId</a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.AboutTop.Length < 25)
+                                        {
+                                            @: @item.AboutTop
+                                        }
+                                        else
+                                        {
+                                            @: @item.AboutTop.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @if (item.AboutBottom.Length < 25)
+                                        {
+                                            @: @item.AboutBottom
+                                        }
+                                        else
+                                        {
+                                            @: @item.AboutBottom.Substring(0, 25)
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>@item.AboutImage</a>
+                                </td>
+                                <td>
+                                    <a>@item.CVLink</a>
+                                </td>
+                                <td class="project-state">
+                                    @if (item.isApproved)
+                                    {
+                                        <span class="badge badge-success text-center">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger text-center">Pasif</span>
+                                    }
+                                </td>
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-info btn-sm" asp-controller="Admin" asp-action="EditHomepage" asp-route-pageId="@item.HomepageId">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteHomepage" asp-route-pageId="@item.HomepageId">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

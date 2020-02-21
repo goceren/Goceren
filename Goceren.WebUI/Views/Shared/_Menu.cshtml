@@ -1,0 +1,29 @@
+﻿@model NavbarModels
+
+@foreach (var item in Model.Menu)
+{
+    try
+    {
+        
+            if (item.MenuType.MenuTypeName == "Menu")
+            {
+                <li class="@(this.ViewContext.RouteData.Values["controller"].ToString() == item.MenuLink ? "active" : "")">
+                    <a class="pt-trigger " asp-controller="@item.MenuLink" asp-action="Index">@item.MenuName</a>
+                </li>
+            }
+            if (item.MenuType.MenuTypeName == "Link")
+            {
+                <li>
+                    <a class="pt-trigger" href="@item.MenuLink" target="_blank">@item.MenuName</a>
+                </li>
+            }
+        
+    }
+    catch (Exception)
+    {
+
+        
+    }
+
+
+}

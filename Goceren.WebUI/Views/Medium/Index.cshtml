@@ -1,0 +1,74 @@
+﻿@model MediumpageModels
+@{
+    ViewData["Title"] = "Blog";
+
+}
+@if (Model.Mediumpage != null)
+{
+    <section class="pt-page pt-page-current" data-id="blog">
+        <div class="section-inner custom-page-content">
+            <div class="section-title-block second-style">
+                <h2 class="section-title">@Model.Mediumpage.PageTitle</h2>
+                <h5 class="section-description">@Model.Mediumpage.PageSubtitle</h5>
+            </div>
+            <div class="section-content">
+                @*
+                    <ul class="portfolio-filters">
+                        <li class="active">
+                            <a class="filter btn btn-sm btn-link" data-group="category_all">All</a>
+                        </li>
+                        <li>
+                            <a class="filter btn btn-sm btn-link" data-group="category_media">Media</a>
+                        </li>
+                        <li>
+                            <a class="filter btn btn-sm btn-link" data-group="category_mockups">Mockups</a>
+                        </li>
+                        <li>
+                            <a class="filter btn btn-sm btn-link" data-group="category_soundcloud">SoundCloud</a>
+                        </li>
+                        <li>
+                            <a class="filter btn btn-sm btn-link" data-group="category_vimeo-videos">Vimeo Videos</a>
+                        </li>
+                        <li>
+                            <a class="filter btn btn-sm btn-link" data-group="category_youtube-videos">YouTube Videos</a>
+                        </li>
+                    </ul>
+                *@
+                @await Html.PartialAsync("_MediumSearch")
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="blog-masonry two-columns clearfix">
+                            @if (Model.Medium != null)
+                            {
+                                foreach (var item in Model.Medium)
+                                {
+                                    <div class="item post-1">
+                                        <div class="blog-card">
+                                            <div class="media-block">
+                                                @*
+                                                    <div class="category">
+                                                        <a href="#" title="View all posts in UI">@item.Category</a>
+                                                    </div>
+                                                *@
+                                                <a asp-controller="Medium" asp-action="Detail" asp-route-title="@item.Title">
+                                                    <img src="~/Site/img/@Model.Mediumpage.BackgroundImage" class="size-blog-masonry-image-two-c" alt="@Model.Mediumpage.PageTitle" title="" />
+                                                    <div class="mask"></div>
+                                                </a>
+                                            </div>
+                                            <div class="post-info">
+                                                <div class="post-date">@item.Date</div>
+                                                <a asp-controller="Medium" asp-action="Detail" asp-route-title="@item.Title">
+                                                    <h4 class="blog-item-title">@item.Title</h4>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

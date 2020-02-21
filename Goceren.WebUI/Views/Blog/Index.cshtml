@@ -1,0 +1,75 @@
+﻿@model BlogpageModels
+@{
+    ViewData["Title"] = "Blog";
+}
+@if (Model.Blogpage != null)
+{
+<section class="pt-page pt-page-current" data-id="blog">
+    <div class="section-inner custom-page-content">
+        <div class="section-title-block second-style">
+            <h2 class="section-title">@Model.Blogpage.PageTitle</h2>
+            <h5 class="section-description">@Model.Blogpage.PageSubtitle</h5>
+        </div>
+        <div class="section-content">
+
+            <ul class="portfolio-filters">
+                <li class="@(ViewBag.category == "All" ? "active" : "")">
+                    <a asp-controller="Blog" asp-action="Index" class="btn btn-sm btn-link">All</a>
+                </li>
+                @if (Model.Categories != null && Model.Categories.Count() != 0)
+                {
+                    foreach (var item in Model.Categories)
+                    {
+                        <li class="@(ViewBag.Category == item.CategoryName ? "active" : "")">
+                            <a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryName" class="btn btn-sm btn-link ">@item.CategoryName</a>
+                        </li>
+                    }
+                }
+            </ul>
+
+            @await Html.PartialAsync("_BlogSearch")
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="blog-masonry two-columns clearfix">
+                        @if (Model.Blogs != null && Model.Blogs.Count() != 0)
+                        {
+                            foreach (var item in Model.Blogs)
+                            {
+                                <div class="item post-1">
+                                    <div class="blog-card">
+                                        <div class="media-block">
+                                            <div class="category">
+                                                <a>
+                                                    @if (item.BlogCategories.Count() != 0 && item.BlogCategories != null)
+                                                    {
+                                                        if (Model.Categories != null && Model.Categories.Count() != 0)
+                                                        {
+                                                            @: @Model.Categories.Where(i => i.CategoryId == (item.BlogCategories.Where(i => i.BlogId == item.BlogId).First().CategoryId)).First().CategoryName
+                                                        }
+                                                    }
+                                                </a>
+                                            </div>
+                                            <a asp-controller="Blog" asp-action="Detail" asp-route-BlogId="@item.BlogId">
+                                                <img src="~/Site/img/Blog/@item.BlogViewImage" class="size-blog-masonry-image-two-c" alt="@item.BlogTitle" title="" />
+                                                <div class="mask"></div>
+                                            </a>
+                                        </div>
+                                        <div class="post-info">
+                                            <div class="post-date">@item.BlogDate</div>
+                                            <div class="post-date ml-2"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;@item.ViewCount</div>
+                                            <a asp-controller="Blog" asp-action="Detail" asp-route-BlogId="@item.BlogId">
+                                                <h4 class="blog-item-title">@item.BlogTitle</h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+}

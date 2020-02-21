@@ -1,0 +1,81 @@
+﻿@model PortfoliopageModels
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+@if (Model.Portfoliopage != null)
+{
+    <section class="pt-page pt-page-current" data-id="portfolio">
+        <div class="section-inner custom-page-content">
+            <div class="section-title-block second-style">
+                <h2 class="section-title">@Model.Portfoliopage.PageTitle</h2>
+                <h5 class="section-description">@Model.Portfoliopage.PageSubtitle</h5>
+            </div>
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="portfolio-content">
+                            <ul class="portfolio-filters">
+                                <li class="active">
+                                    <a class="filter btn btn-sm btn-link" data-group="category_all">All</a>
+                                </li>
+                                @if (Model.Categories.Count != 0 && Model.Categories != null)
+                                {
+                                    foreach (var item in Model.Categories)
+                                    {
+                                        <li>
+                                            <a class="filter btn btn-sm btn-link" data-group="@item.CategoryName">@item.CategoryName</a>
+                                        </li>
+                                    }
+                                }
+                                <li>
+                                    <a class="filter btn btn-sm btn-link" data-group="other">Others</a>
+                                </li>
+                            </ul>
+                            @await Html.PartialAsync("_Search")
+
+                            @if (Model.GithubRepoModels != null && Model.GithubRepoModels.Count() != 0)
+                            {
+                                <div id="menuFull" class="portfolio-grid three-columns">
+                                    @foreach (var item in Model.GithubRepoModels)
+                                    {
+                                        <figure class="item standard" data-groups='["category_all",
+                                            @if (item.Language == null)
+                                            {
+                                                @: "other"
+                                            }
+                                            else
+                                            {
+                                                @: "@item.Language"
+                                            }
+                                    ]'>
+                                            <div class="portfolio-item-img">
+                                                <img src="~/Site/img/@Model.Portfoliopage.BackgroundImage" alt="@Model.Portfoliopage.GithubUsername" title="" />
+                                                <a href="@item.HtmlUrl" target="_blank" class="ajax-page-load"></a>
+                                            </div>
+
+                                            <i class="far fa-file-alt"></i>
+                                            <h4 class="name">@item.Name</h4>
+                                            <h4 class="name mt-5" style="font-size:12px">@item.Description</h4>
+                                            <span class="category">
+                                                @if (item.Language == null)
+                                                {
+                                                    @: Other
+                                                }
+                                                else
+                                                {
+                                                    @: @item.Language
+                                                }
+                                            </span>
+                                        </figure>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

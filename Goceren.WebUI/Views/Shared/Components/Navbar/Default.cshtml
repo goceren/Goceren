@@ -1,0 +1,51 @@
+﻿@model NavbarModels
+@if (Model.Navbar != null)
+{
+    <header id="site_header" class="header mobile-menu-hide">
+        <div class="header-content clearfix">
+            <div class="my-photo">
+                <img src="~/Site/img/@Model.Navbar.NavbarImage" alt="@Model.Navbar.NavbarTitle">
+            </div>
+
+            <div class="site-title-block">
+                <div class="site-title">@Model.Navbar.NavbarTitle</div>
+            </div>
+            <div class="site-nav">
+                <ul id="nav" class="site-main-menu">
+                    @if (Model.Menu != null)
+                    {
+                        @await Html.PartialAsync("_Menu", Model);
+                    }
+                </ul>
+            </div>
+            @if (Model.Social != null)
+            {
+                <div class="social-links">
+                    <a href="@Model.Social.FacebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="@Model.Social.TwitterLink" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="@Model.Social.InstagramLink" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="social-links mt-3">
+                    <a href="@Model.Social.LinkedinLink" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="@Model.Social.MediumLink" target="_blank"><i class="fab fa-medium"></i></a>
+                    <a href="@Model.Social.GithubLink" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            }
+            <div class="copyrights">@Model.Navbar.Cpyright</div>
+        </div>
+    </header>
+    <div class="mobile-header mobile-visible">
+        <div class="mobile-logo-container">
+            <div class="mobile-header-image">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/Site/img/@Model.Navbar.NavbarImage" alt="@Model.Navbar.NavbarTitle">
+                </a>
+            </div>
+            <div class="mobile-site-title"><a asp-controller="Home" asp-action="Index">@Model.Navbar.NavbarTitle</a></div>
+        </div>
+
+        <a class="menu-toggle mobile-visible">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+}

@@ -1,0 +1,124 @@
+﻿@model Resumepage
+@{
+    ViewData["Title"] = "Resume";
+}
+@if (Model != null)
+{
+    <section class="pt-page pt-page-current">
+        <div class="section-inner custom-page-content">
+            <div class="section-title-block second-style">
+                <h2 class="section-title">@Model.ResumepageTitle</h2>
+                <h5 class="section-description">@Model.Subtitle</h5>
+            </div>
+
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="col-inner bs-30">
+                            <div class="block-title">
+                                <h3>@Model.LeftTopTitle</h3>
+                            </div>
+                            <div class="timeline timeline-second-style bs-30 clearfix">
+                                @if (Model.Educations != null)
+                                {
+                                    @await Html.PartialAsync("_Educations", Model.Educations.Where(i => i.isApproved == true))
+                                }
+                            </div>
+                            <div class="block-title">
+                                <h3>@Model.LeftBottomTitle<span></span></h3>
+                            </div>
+                            <div class="timeline timeline-second-style clearfix">
+                                @if (Model.Experiences != null)
+                                {
+                                    @await Html.PartialAsync("_Experiences", Model.Experiences.Where(i => i.isApproved == true))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="col-inner">
+                            <div class="block-title">
+                                <h3>@Model.RightTopTitle<span></span></h3>
+                            </div>
+                            <div class="skills-info skills-second-style">
+                                @if (Model.Skills != null)
+                                {
+                                    @await Html.PartialAsync("_Skills", Model.Skills.Where(i => i.isApproved == true))
+                                }
+                            </div>
+                            @* SKILLS 2
+
+                                <div class="block-title ts-10">
+                                    <h3>Coding Skills<span></span></h3>
+                                </div>
+                                <div class="skills-info skills-second-style">
+                                    <!-- Skill 5 -->
+                                    <div class="clearfix">
+                                        <h4>JavaScript</h4>
+                                        <div class="skill-value">85%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-5"></div>
+                                    </div>
+                                    <!-- /Skill 5 -->
+                                    <!-- Skill 6 -->
+                                    <div class="clearfix">
+                                        <h4>PHP</h4>
+                                        <div class="skill-value">70%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-6"></div>
+                                    </div>
+                                    <!-- /Skill 6 -->
+                                    <!-- Skill 7 -->
+                                    <div class="clearfix">
+                                        <h4>Python</h4>
+                                        <div class="skill-value">60%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-7"></div>
+                                    </div>
+                                    <!-- /Skill 7 -->
+                                    <!-- Skill 8 -->
+                                    <div class="clearfix">
+                                        <h4>Perl</h4>
+                                        <div class="skill-value">75%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-8"></div>
+                                    </div>
+                                    <!-- /Skill 8 -->
+                                    <!-- Skill 9 -->
+                                    <div class="clearfix">
+                                        <h4>HTML / CSS</h4>
+                                        <div class="skill-value">100%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-9"></div>
+                                    </div>
+                                    <!-- /Skill 9 -->
+                                    <!-- Skill 10 -->
+                                    <div class="clearfix">
+                                        <h4>Smarty / Twig</h4>
+                                        <div class="skill-value">80%</div>
+                                    </div>
+                                    <div class="skill-container">
+                                        <div class="skill-percentage skill-10"></div>
+                                    </div>
+                                    <!-- /Skill 10 -->
+                                </div>
+                            *@
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="col-inner ts-30">
+                            <a href="~/CV/@Model.CVLink" target="_blank" class="btn btn-primary">Download CV</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,26 @@
+﻿@model Experience
+@{
+    ViewData["Title"] = "DeleteConnectionExperience";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (Model != null)
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header">
+                Emin misiniz?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><b>"@Model.Title"</b> - <b>"@ViewBag.resumepage.ResumepageTitle"</b> adlı bağlantıyı silmek istediğinizden emin misiniz ? </h5>
+                <p class="card-text"></p>
+                <br />
+                <form class="text-right" asp-controller="AdminResume" asp-action="DeleteConnectionExperience" method="post">
+                    <a type="button" class="btn btn-primary mr-2" asp-controller="AdminResume" asp-action="Edit" asp-route-resumepageId="@ViewBag.resumepage.ResumepageId">Vazgeç</a>
+                    <input type="hidden" name="experienceId" value="@Model.ExperienceId" />
+                    <input type="hidden" name="resumepageId" value="@ViewBag.resumepage.ResumepageId" />
+                    <button type="submit" class="btn btn-danger">Silmeyi Onaylıyorum</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

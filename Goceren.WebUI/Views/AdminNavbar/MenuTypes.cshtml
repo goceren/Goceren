@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MenuType>
+@{
+    ViewData["Title"] = "MenuTypes";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Menü Tipleri</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    if (ViewBag.alert)
+    {
+
+        <div class="alert alert-danger">
+            Hiç <b>Aktif Menü Tipi</b> yok.
+        </div>
+    }
+}
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Liste</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 84%">
+                            Menü Adı
+                        </th>
+                        <th class="text-center" style="width: 15%">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="AdminNavbar" asp-action="AddMenuType">
+                                <i class="fas fa-plus">
+                                </i>
+                                Yeni Ekle
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a>@item.MenuTypeId</a>
+                                </td>
+                                <td>
+                                    <a>@item.MenuTypeName</a>
+                                </td>
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-info btn-sm" asp-controller="AdminNavbar" asp-action="EditMenuType" asp-route-menutypeId="@item.MenuTypeId">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="AdminNavbar" asp-action="DeleteMenuType" asp-route-menutypeId="@item.MenuTypeId">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,61 @@
+﻿@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<div class="card">
+    <div class="card-body register-card-body">
+        <p class="login-box-msg">Üye olmak için formu doldurunuz.</p>
+        <form asp-controller="Account" asp-action="Login" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <input type="hidden" value="@Model.returnUrl" name="returnUrl" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="Email" value="@Model.Email" class="form-control" placeholder="Email">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <input asp-for="Password" value="@Model.Password" class="form-control" placeholder="Şifre">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Giriş Yap</button>
+                </div>
+            </div>
+        </form>
+        @*
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook mr-2"></i>
+                Sign up using Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google-plus mr-2"></i>
+                Sign up using Google+
+            </a>
+        </div>
+        *@
+        <div class="row text-center mt-4">
+            <div class="col-12">
+                <a asp-controller="Account" asp-action="Register">Üye Ol</a>
+            </div>
+        </div>
+        <div class="row text-center mt-4">
+            <div class="col-12">
+                <a asp-controller="Account" asp-action="ForgotPassword">Şifremi Unuttum?</a>
+            </div>
+        </div>
+    </div>
+</div>

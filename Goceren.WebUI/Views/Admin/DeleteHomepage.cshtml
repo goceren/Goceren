@@ -1,0 +1,25 @@
+﻿@model Homepage
+@{
+    ViewData["Title"] = "DeleteHomepage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (Model != null)
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header">
+                Emin misiniz?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><b>"@Model.Title"</b> başlıklı kaydı silmek istiyor musunuz ?</h5>
+                <p class="card-text"></p>
+                <br />
+                <form class="text-right" asp-controller="Admin" asp-action="DeleteHomepage" method="post">
+                    <a type="button" class="btn btn-primary mr-2" asp-controller="Admin" asp-action="Index">Vazgeç</a>
+                    <input type="hidden" name="pageId" value="@Model.HomepageId" />
+                    <button type="submit" class="btn btn-danger">Silmeyi Onaylıyorum</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

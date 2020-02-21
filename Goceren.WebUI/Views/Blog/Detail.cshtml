@@ -1,0 +1,126 @@
+﻿@model BlogpageModels
+@{
+    ViewData["Title"] = "Detail";
+
+}
+@if (Model.Blog != null)
+{
+    <div id="main-content" class="single-page-content">
+        <div id="primary" class="content-area">
+            <div id="content" class="page-content site-content" role="main">
+                <article class="post">
+                    <div class="post-thumbnail">
+                        <img src="~/Site/img/Blog/@Model.Blog.BlogDetailImage" alt="Background">
+                    </div>
+
+                    <div class="post-content">
+                        <header class="entry-header">
+                            <div class="entry-meta entry-meta-top">
+                                @if (Model.Categories != null && Model.Categories.Count() != 0)
+                                {
+                                    foreach (var item in Model.Categories)
+                                    {
+                                        <span><a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryName">@item.CategoryName</a></span>
+                                    }
+                                }
+
+                            </div>
+                            <h2 class="entry-title">@Model.Blog.BlogTitle</h2>
+                        </header>
+                        <hr /><br /><br />
+                        <div class="entry-content">
+                            <div class="row">
+                                <div class=" col-xs-12 col-sm-12 ">
+                                    <div class="col-inner">
+                                        @Html.Raw(Model.Blog.BlogContent)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="entry-meta entry-meta-bottom">
+                            <div class="date-author">
+                                <span class="entry-date">
+                                    <i class="far fa-clock"></i> <span class="entry-date">@Model.Blog.BlogDate</span>
+                                </span>
+                                <span class="author vcard">
+                                    <a class="url fn n"><i class="fas fa-user"></i>&nbsp;&nbsp;@Model.Blog.BlogAuthor</a>
+                                </span>
+                                <span class="author vcard">
+                                    <a class="url fn n"><i class="fas fa-eye"></i>&nbsp;&nbsp;@Model.Blog.ViewCount</a>
+                                </span>                            </div>
+                            <div class="entry-share btn-group share-buttons">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=https://goceren.com/Blog/Detail?BlogId=@Model.Blog.BlogId" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="btn" target="_blank" title="Share on Facebook">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+
+                                <a href="https://twitter.com/intent/tweet?url=https://goceren.com/Blog/Detail?BlogId=@Model.Blog.BlogId" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="btn" target="_blank" title="Share on Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-tags">
+                            <div class="tags">
+                                @if (Model.Categories != null && Model.Categories.Count() != 0)
+                                {
+                                    foreach (var category in Model.Categories)
+                                    {
+                                        <a class="url fn n" asp-controller="Blog" asp-action="Index" asp-route-category="@category.CategoryName">@category.CategoryName</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <nav class="navigation post-navigation clearfix">
+                    <div class="nav-links">
+                        <h5 class="text-center"> Diğer Yazılar</h5>
+                        @if (Model.Blogs != null && Model.Blog != null)
+                        {
+                            @if ((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) - 1) > -1)
+                            {
+                                <a class="entry-title" asp-controller="Blog" asp-action="Detail" asp-route-BlogId="@Model.Blogs.ElementAt((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) - 1)).BlogId" rel="prev"><span><i class="fa fa-arrow-left"></i> &nbsp;&nbsp;@Model.Blogs.ElementAt((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) - 1)).BlogTitle</span></a>
+                            }
+
+                            @if ((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) + 1) < Model.Blogs.Count)
+                            {
+                                <a class="entry-title" asp-controller="Blog" asp-action="Detail" asp-route-BlogId="@Model.Blogs.ElementAt((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) + 1)).BlogId" rel="next"><span> @Model.Blogs.ElementAt((Model.Blogs.IndexOf(Model.Blogs.Where(i => i.BlogId == Model.Blog.BlogId).ToList().First()) + 1)).BlogTitle&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></span></a>
+                            }
+                        }
+                    </div>
+                </nav>
+                @*
+                    <div id="comments" class="comments-area">
+                        <div id="respond" class="comment-respond">
+                            <h3 id="reply-title" class="comment-reply-title">Leave a Comment</h3>
+
+                            <form action="#" method="post" id="commentform" class="comment-form" novalidate="">
+                                <div class="form-group form-group-with-icon comment-form-message">
+                                    <textarea id="comment" class="form-control" name="comment" placeholder="Your Comment" cols="45" rows="8" aria-required="true"></textarea>
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-comment"></i>
+                                </div>
+
+                                <div class="form-group form-group-with-icon comment-form-author">
+                                    <input id="author" class="form-control" name="author" type="text" placeholder="Your Name" value="" size="30" aria-required="true">
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-user"></i>
+                                </div>
+
+                                <div class="form-group form-group-with-icon comment-form-email">
+                                    <input id="email" class="form-control" name="email" type="text" placeholder="Your Email" value="" size="30" aria-required="true">
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-envelope"></i>
+                                </div>
+
+                                <p class="form-submit">
+                                    <input name="submit" type="submit" id="submit" class="submit" value="Post Comment">
+                                </p>
+                            </form>
+                        </div>
+                    </div><!-- #comments -->
+                *@
+            </div>
+        </div>
+    </div>
+}

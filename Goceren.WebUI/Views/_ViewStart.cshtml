@@ -1,0 +1,29 @@
+﻿@{
+    string CurrentControllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+    switch (CurrentControllerName)
+    {
+        case "Admin":
+            Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+
+        case "AdminMetatags":
+            Layout =  "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+
+        case "AdminNavbar":
+            Layout =  "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+
+        case "AdminResume":
+            Layout =  "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+
+        case "Account":
+            Layout =  "~/Views/Shared/_LayoutAccount.cshtml";
+            break;
+
+        default:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+}

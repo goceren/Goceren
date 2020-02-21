@@ -1,0 +1,108 @@
+﻿@model MediumpageModels
+@{
+    ViewData["Title"] = "Detail"; 
+}
+@if (Model.Medium != null && Model.Mediumpage != null && Model.MediumCategories != null)
+{
+    var item = Model.Medium.FirstOrDefault();
+    <div id="main-content" class="single-page-content">
+        <div id="primary" class="content-area">
+            <div id="content" class="page-content site-content" role="main">
+                <article class="post">
+                    <div class="post-thumbnail">
+                        <img src="~/Site/img/@Model.Mediumpage.DetailImage" alt="Background">
+                    </div>
+                    <div class="post-content">    
+                        <header class="entry-header">
+                            <div class="entry-meta entry-meta-top">
+                                <span><a>@Model.MediumCategories.FirstOrDefault().Name</a></span>
+                            </div>
+                            <h2 class="entry-title"><a href="@item.Link" target="_blank">@item.Title</a></h2>
+                        </header>
+                        <hr /><br /><br />
+                        <div class="entry-content">
+                            <div class="row">
+                                <div class=" col-xs-12 col-sm-12 ">
+                                    <div class="col-inner">
+                                        @Html.Raw(item.Content)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="entry-meta entry-meta-bottom">
+                            <div class="date-author">
+                                <span class="entry-date">
+                                    <a href="@item.Link" target="_blank" rel="bookmark">
+                                        <i class="far fa-clock"></i> <span class="entry-date">@item.Date</span>
+                                    </a>
+                                </span>
+                                <span class="author vcard">
+                                    <a class="url fn n" href="@item.LinkProfile" target="_blank" rel="author"> <i class="fas fa-user"></i>&nbsp;&nbsp;@Model.Mediumpage.MediumUsername</a>
+                                </span>
+                            </div>
+                            <div class="entry-share btn-group share-buttons">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=https://goceren.com/Medium/Detail?BlogId=@item.Title" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" class="btn" target="_blank" title="Share on Facebook">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+
+                                <a href="https://twitter.com/intent/tweet?url=https://goceren.com/Medium/Detail?BlogId=@item.Title" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" class="btn" target="_blank" title="Share on Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-tags">
+                            <div class="tags">
+                                @if (Model.MediumCategories != null)
+                                {
+                                    foreach (var category in Model.MediumCategories)
+                                    {
+                                        <a>@category.Name</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                @*
+                    <nav class="navigation post-navigation clearfix">
+                        <div class="nav-links">
+                            <a href="#" rel="prev"><span class="meta-nav"> Why I Switched to Sketch For UI Design</span></a>
+                            <a href="#" rel="next"><span class="meta-nav"> 6 Easy Steps to Better Icon Design</span></a>
+                        </div>
+                    </nav><!-- .navigation -->
+                *@
+                @*
+                    <div id="comments" class="comments-area">
+                        <div id="respond" class="comment-respond">
+                            <h3 id="reply-title" class="comment-reply-title">Leave a Comment</h3>
+
+                            <form action="#" method="post" id="commentform" class="comment-form" novalidate="">
+                                <div class="form-group form-group-with-icon comment-form-message">
+                                    <textarea id="comment" class="form-control" name="comment" placeholder="Your Comment" cols="45" rows="8" aria-required="true"></textarea>
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-comment"></i>
+                                </div>
+
+                                <div class="form-group form-group-with-icon comment-form-author">
+                                    <input id="author" class="form-control" name="author" type="text" placeholder="Your Name" value="" size="30" aria-required="true">
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-user"></i>
+                                </div>
+
+                                <div class="form-group form-group-with-icon comment-form-email">
+                                    <input id="email" class="form-control" name="email" type="text" placeholder="Your Email" value="" size="30" aria-required="true">
+                                    <div class="form-control-border"></div>
+                                    <i class="form-control-icon fa fa-envelope"></i>
+                                </div>
+
+                                <p class="form-submit">
+                                    <input name="submit" type="submit" id="submit" class="submit" value="Post Comment">
+                                </p>
+                            </form>
+                        </div>
+                    </div><!-- #comments -->
+                *@
+            </div>
+        </div>
+    </div>
+}

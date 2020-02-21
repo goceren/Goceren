@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Skills>
+@foreach (var item in Model)
+{
+    <div class="clearfix">
+        <h4>@item.SkillTitle</h4>
+        <div class="skill-value">@item.SkillPercent%</div>
+    </div>
+    <div class="skill-container">
+        <div class="skill-percentage skill-@item.SkillPercent">
+        </div>
+    </div>
+}

@@ -1,0 +1,83 @@
+﻿@model Social
+@{
+    ViewData["Title"] = "AddSocial";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Sosyal Medya Ayarı Ekle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="AdminNavbar" asp-action="AddSocial" method="post" enctype="multipart/form-data">
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="FacebookLink">Facebook Link</label>
+                            <input asp-for="FacebookLink" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="FacebookLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TwitterLink">Twitter Link</label>
+                            <input asp-for="TwitterLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="TwitterLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="InstagramLink">Instagram Link</label>
+                            <input asp-for="InstagramLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="InstagramLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GithubLink">Github Link</label>
+                            <input asp-for="GithubLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="GithubLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MediumLink">Medium Link</label>
+                            <input asp-for="MediumLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="MediumLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LinkedinLink">Linkedin Link</label>
+                            <input asp-for="LinkedinLink" class="form-control">
+                            <span class="text-danger" asp-validation-for="LinkedinLink"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email">Email</label>
+                            <input asp-for="Email" class="form-control">
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="AdminNavbar" asp-action="Social" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+
+
+
+
+

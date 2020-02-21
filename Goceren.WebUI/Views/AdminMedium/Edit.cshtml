@@ -1,0 +1,77 @@
+﻿@model Mediumpage
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Medium Güncelle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="AdminMedium" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MediumpageId"/>
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="PageTitle">Sayfa Başlığı</label>
+                            <input asp-for="PageTitle" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="PageTitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PageSubtitle">Alt Başlık</label>
+                            <input asp-for="PageSubtitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="PageSubtitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MediumUsername">Medium Kullanıcı Adı</label>
+                            <input asp-for="MediumUsername" class="form-control">
+                            <span class="text-danger" asp-validation-for="MediumUsername"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Kart Arkaplan Resmi (800 x 375) --- Detay Sayfası Resmi (1920 x 400)</label>
+                            @if (Model != null)
+                            {
+                                <div class="input-group">
+                                    <div class="custom-file mr-3">
+                                        <input type="file" name="file" class="custom-file-input" id="file">
+                                        <label class="custom-file-label" for="exampleInputFile">@Model.BackgroundImage</label>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" name="filedetail" class="custom-file-input" id="filedetail">
+                                        <label class="custom-file-label" for="exampleInputFile">@Model.DetailImage</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="AdminMedium" asp-action="Index" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+

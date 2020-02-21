@@ -1,0 +1,75 @@
+﻿@model Tweets
+@{
+    ViewData["Title"] = "AddTwitter";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Twitter Ayar Ekle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form asp-controller="Admin" asp-action="AddTwitter" method="post" enctype="multipart/form-data">
+    <section class="content p-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detaylar</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="FeedTitle">FeedTitle</label>
+                            <input asp-for="FeedTitle" class="form-control">
+                            <span class="text-danger" asp-validation-for="FeedTitle"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TwitterUsername">Twitter Kullanıcı Adı</label>
+                            <input asp-for="TwitterUsername" class="form-control">
+                            <span class="text-danger" asp-validation-for="TwitterUsername"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConsumerKey">Consumer Key</label>
+                            <input asp-for="ConsumerKey" type="text" class="form-control">
+                            <span class="text-danger" asp-validation-for="ConsumerKey"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConsumerSecret">ConsumerSecret</label>
+                            <input asp-for="ConsumerSecret" class="form-control">
+                            <span class="text-danger" asp-validation-for="ConsumerSecret"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AccessToken">AccessToken</label>
+                            <input asp-for="AccessToken" class="form-control">
+                            <span class="text-danger" asp-validation-for="AccessToken"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AccessTokenSecret">AccessTokenSecret</label>
+                            <input asp-for="AccessTokenSecret" class="form-control">
+                            <span class="text-danger" asp-validation-for="AccessTokenSecret"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="isApproved" class="custom-control-input" type="checkbox">
+                                <label asp-for="isApproved" class="custom-control-label">Aktif</label>
+                                <span class="text-danger" asp-validation-for="isApproved"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col-12">
+                <a asp-controller="Admin" asp-action="Twitter" class="btn btn-danger btn-lg">Vazgeç</a>
+                <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+            </div>
+        </div>
+    </section>
+</form>
+
+

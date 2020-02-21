@@ -1,0 +1,105 @@
+﻿@model HomepageModels
+@{
+    ViewData["Title"] = "Home - Veli Yavuz Göçeren";
+}
+
+<section class="pt-page pt-page-current" data-id="about-me">
+    @if (Model.Homepage != null)
+    {
+        <div class="section-inner start-page-full-width">
+            <div class="start-page-full-width">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="inner-content">
+                            <div class="fill-block" style="background-image: url('@Url.Content("~/Site/img/" + Model.Homepage.AboutImage)'); ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="inner-content">
+                            <div class="hp-text-block">
+                                <div class="owl-carousel text-rotation">
+                                    @if (Model.Subtitle != null && Model.Subtitle.Count() != 0)
+                                    {
+                                        @foreach (var item in Model.Subtitle)
+                                        {
+                                            <div class="item">
+                                                <div class="sp-subtitle">@item.SubtitleName</div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <h2 class="hp-main-title">@Model.Homepage.Title</h2>
+                                <p>@Model.Homepage.AboutTop</p>
+                                <p>@Model.Homepage.AboutBottom</p>
+                                <div class="hp-buttons">
+                                    <a href="~/CV/@Model.Homepage.CVLink" target="_blank" class="btn btn-primary" download>Download CV</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="section-inner custom-page-content">
+        <div class="page-content">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="col-inner">
+                        <div class="block-title">
+                            @if (Model.WhatIDo.Count() > 0 && Model.WhatIDo != null)
+                            {
+                                <h3>@Model.WhatIDo.First().WhatIDoTitle</h3>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @if (Model.WhatIDo.Count() > 0 && Model.WhatIDo != null)
+                {
+                    @await Html.PartialAsync("_WhatIDo", Model.WhatIDo)
+                }
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="col-inner ts-25 bs-50">
+                        @if (Model.TweetsModel != null)
+                        {
+                            <div class="block-title">
+                                <h3><span>@Model.Tweets.FeedTitle</span></h3>
+                            </div>
+                            <div class="testimonials owl-carousel">
+                                @*@await Component.InvokeAsync("Tweets")*@
+
+                                @foreach (var tweet in Model.TweetsModel)
+                                {
+                                <div class="testimonial-item">
+                                    <div class="testimonial-content">
+                                        <div class="testimonial-text">
+                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName/status/@tweet.Id" target="_blank"><p>@tweet.Text</p></a>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial-credits">                                        
+                                        <div class="testimonial-picture">
+                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><img src="@Model.TwitterModel.ProfileImage" alt="@Model.TwitterModel.Name" /></a>
+                                            <p class="testimonial-author">@tweet.CreatedDate</p>
+                                        </div>
+                                        <div class="testimonial-author-info">
+                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank">
+                                                <p class="testimonial-author">@Model.TwitterModel.Name</p>
+                                            </a>
+                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><p class="testimonial-firm">@Model.TwitterModel.SceenName</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Portfoliopage>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Projelerim Sayfaları</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    if (ViewBag.alert)
+    {
+        if (ViewBag.items < 1)
+        {
+            <div class="alert alert-danger">
+                En az 1 <b>Aktif Projelerim Sayfası</b> ayarı olmalıdır.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                Birden fazla <b>Aktif Projelerim Sayfası</b> ayarı olmamalıdır.
+            </div>
+        }
+    }
+}
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Liste</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 15%">
+                            Sayfa Başlığı
+                        </th>
+                        <th style="width: 15%">
+                            Alt Başlık
+                        </th>
+                        <th style="width: 15%">
+                            Github Kullanıcı Adı
+                        </th>
+                        <th style="width: 15%">
+                            Arka Plan Resmi (600 x 400)
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Durum
+                        </th>
+                        <th class="text-center" style="width: 15%">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="AdminPortfolio" asp-action="Create">
+                                <i class="fas fa-plus">
+                                </i>
+                                Yeni Ekle
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a>@item.PortfoliopageId</a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.PageTitle
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.PageSubtitle
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.GithubUsername
+                                    </a>
+                                </td>
+                                <td>
+                                    <a>
+                                        @item.BackgroundImage
+                                    </a>
+                                </td>
+                                <td class="project-state">
+                                    @if (item.isApproved)
+                                    {
+                                        <span class="badge badge-success text-center">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger text-center">Pasif</span>
+                                    }
+                                </td>
+                                <td class="project-actions text-center">
+                                    <a class="btn btn-info btn-sm" asp-controller="AdminPortfolio" asp-action="Edit" asp-route-portfolioId="@item.PortfoliopageId">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Düzenle
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="AdminPortfolio" asp-action="Delete" asp-route-portfolioId="@item.PortfoliopageId">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+

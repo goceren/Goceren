@@ -1,0 +1,14 @@
+﻿@model Settings
+@if (Model != null)
+{
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="@Model.SiteDescription" />
+    <meta name="keywords" content="@Model.SiteKeywords" />
+    <meta name="author" content="@Model.SiteAuthor" />
+    <link rel="shortcut icon" href="~/Site/img/@Model.SiteIcon">
+}
+else
+{
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+}
+
