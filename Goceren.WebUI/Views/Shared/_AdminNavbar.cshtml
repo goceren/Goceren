@@ -10,10 +10,19 @@
                 <img src="~/Admin/img/profile.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a asp-controller="Admin" asp-action="Index" class="d-block">Veli Yavuz Göçeren</a>
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-controller="Admin" asp-action="Index" class="d-block">Veli Yavuz Göçeren</a>
+                }
+                @if(User.IsInRole("user"))
+                {
+                    <a asp-controller="User" asp-action="Index" class="d-block">Veli Yavuz Göçeren</a>
+                }
             </div>
         </div>
         <nav class="mt-2">
+            @if (User.IsInRole("admin"))
+            {
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -191,7 +200,45 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a asp-controller="AdminManageUser" asp-action="Index" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Kullanıcılar
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a asp-controller="AdminManageUser" asp-action="Role" class="nav-link">
+                        <i class="nav-icon fas fa-microphone"></i>
+                        <p>
+                            Roller
+                        </p>
+                    </a>
+                </li>
             </ul>
+            }
+            @if (User.IsInRole("user"))
+            {
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item has-treeview">
+                        <a asp-controller="User" asp-action="Index" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                Anasayfa
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a asp-controller="User" asp-action="Blog" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                Blog İsteği
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            }
         </nav>
     </div>
 </aside>

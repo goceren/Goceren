@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "AccessDenied";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-controller="Admin" asp-action="Index">Geri Dön</a>
+                }
+                @if (User.IsInRole("user"))
+                {
+                    <a asp-controller="User" asp-action="Index">Geri Dön</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

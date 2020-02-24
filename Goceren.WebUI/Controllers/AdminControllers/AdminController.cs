@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Goceren.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IHomepageService _homepageService;

@@ -37,12 +37,12 @@ namespace Goceren.WebUI.Controllers
                 blogpageModel.Blogpage = _blogpageService.GetAll().Where(i => i.isApproved == true).FirstOrDefault();
                 if (!string.IsNullOrEmpty(category))
                 {
-                    blogpageModel.Blogs = _blogService.GetBlogsByCategory(category).Where(i => i.isPublished == true).ToList();
+                    blogpageModel.Blogs = _blogService.GetBlogsByCategory(category).Where(i => i.isPublished == true && i.BlogConfirm == true).ToList();
                     ViewBag.Category = category;
                 }
                 else
                 {
-                    blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true).OrderByDescending(d => d.BlogDate).ToList();
+                    blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true && i.BlogConfirm == true).OrderByDescending(d => d.BlogDate).ToList();
                     ViewBag.category = "All";
                 }
                 if (!string.IsNullOrEmpty(search))
@@ -78,7 +78,7 @@ namespace Goceren.WebUI.Controllers
                 blogpageModel.Blog = null;
                 blogpageModel.Categories = null;
             }
-            blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true).ToList();
+            blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true && i.BlogConfirm == true).ToList();
 
             var clientDetails = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             try

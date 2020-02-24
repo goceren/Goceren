@@ -3,6 +3,7 @@
     ViewData["Title"] = "Blog";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -16,9 +17,6 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Bloglar</h3>
-            <div class="text-right">
-                <a asp-controller="AdminBlog" asp-action="UserBlogs" class="btn btn-success mr-5" style="color:white;">Bekleyen İstekler (@ViewBag.count)</a>
-            </div>
         </div>
         <div class="card-body p-0">
             <table class="table table-striped projects">
@@ -46,7 +44,7 @@
                             Durum
                         </th>
                         <th class="text-center" style="width: 15%">
-                            <a class="btn btn-primary btn-sm text-center" asp-controller="AdminBlog" asp-action="CreateBlog">
+                            <a class="btn btn-primary btn-sm text-center" asp-controller="User" asp-action="CreateBlog">
                                 <i class="fas fa-plus">
                                 </i>
                                 Yeni Ekle
@@ -81,7 +79,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a asp-controller="AdminBlog" asp-action="Blog" asp-route-userName="@item.UserName">@item.UserName</a>                                    
+                                    @item.BlogAuthor
                                 </td>
                                 <td>
                                     <a>@item.BlogDate</a>
@@ -100,12 +98,12 @@
                                     }
                                 </td>
                                 <td class="project-actions text-center">
-                                    <a class="btn btn-info btn-sm" asp-controller="AdminBlog" asp-action="EditBlog" asp-route-blogId="@item.BlogId">
+                                    <a class="btn btn-info btn-sm" asp-controller="User" asp-action="EditBlog" asp-route-blogId="@item.BlogId">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Düzenle
                                     </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="AdminBlog" asp-action="DeleteBlog" asp-route-blogId="@item.BlogId">
+                                    <a class="btn btn-danger btn-sm" asp-controller="User" asp-action="DeleteBlog" asp-route-blogId="@item.BlogId">
                                         <i class="fas fa-trash">
                                         </i>
                                         Sil

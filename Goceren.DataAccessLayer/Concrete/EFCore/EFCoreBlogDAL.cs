@@ -62,6 +62,9 @@ namespace Goceren.DataAccessLayer.Concrete.EFCore
                     blog.BlogViewImage = entity.BlogViewImage;
                     blog.isPublished = entity.isPublished;
                     blog.ViewCount = entity.ViewCount;
+                    blog.BlogConfirm = entity.BlogConfirm;
+                    blog.BlogUser = entity.BlogUser;
+                    blog.SawAdmin = entity.SawAdmin;
                     blog.BlogCategories = id.Select(catid => new BlogCategory()
                     {
                         BlogId = entity.BlogId,

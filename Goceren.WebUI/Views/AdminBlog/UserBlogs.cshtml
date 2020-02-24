@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Blog>
+@{
+    ViewData["Title"] = "UserBlogs";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Blog</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Kullanıcı İstek Blogları</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            ID
+                        </th>
+                        <th style="width: 10%">
+                            Başlık
+                        </th>
+                        <th style="width: 15%">
+                            İçerik
+                        </th>
+                        <th style="width: 10%">
+                            Yazar
+                        </th>
+                        <th style="width: 10%">
+                            Tarih
+                        </th>
+                        <th style="width: 10%">
+                            View Resim
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Aktif
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Onay Durumu
+                        </th>
+                        <th class="text-center" style="width: 15%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model.OrderBy(i => i.BlogDate).OrderBy(i => i.SawAdmin))
+                        {
+                    <tr>
+                        <td>
+                            <a>@item.BlogId</a>
+                        </td>
+                        <td>
+                            <a>
+                                @item.BlogTitle
+                            </a>
+                        </td>
+                        <td>
+                            <a>
+                                @if (@Html.Raw(item.BlogContent).ToString().Length < 45)
+                                {
+                                    @: @Html.Raw(item.BlogContent)
+                                }
+                                else
+                                {
+                                    @: @Html.Raw(item.BlogContent).ToString().Substring(0, 45) ...
+                                }
+                            </a>
+                        </td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            <a>@item.BlogDate</a>
+                        </td>
+                        <td>
+                            <a>@item.BlogViewImage</a>
+                        </td>
+                        <td class="project-state">
+                            @if (item.BlogConfirm)
+                            {
+                                <span class="badge badge-success text-center">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger text-center">Pasif</span>
+                            }
+                        </td>
+                        <td class="project-state">
+                            @if (item.SawAdmin)
+                            {
+                                <span class="badge badge-success text-center">Görüldü</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning text-center">Beklemede</span>
+                            }
+                        </td>
+                        <td class="project-actions text-center">
+                            <a class="btn btn-info btn-sm" asp-controller="AdminBlog" asp-action="EditUserBlog" asp-route-blogId="@item.BlogId">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Düzenle
+                            </a>
+                            <a class="btn btn-danger btn-sm" asp-controller="AdminBlog" asp-action="DeleteUserBlog" asp-route-blogId="@item.BlogId">
+                                <i class="fas fa-trash">
+                                </i>
+                                Sil
+                            </a>
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+

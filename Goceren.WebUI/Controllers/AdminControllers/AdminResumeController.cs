@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Goceren.WebUI.Controllers.AdminControllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class AdminResumeController : Controller
     {
         private readonly IResumepageService _resumepageService;

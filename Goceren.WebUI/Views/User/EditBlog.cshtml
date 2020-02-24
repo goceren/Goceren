@@ -1,29 +1,28 @@
 ﻿@model Blog
 @{
-    ViewData["Title"] = "CreateBlog";
+    ViewData["Title"] = "EditBlog";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-}
-@section scripts{
-    <script src="~/Admin/lib/ckeditor/ckeditor.js"></script>
-    <script>CKEDITOR.replace("BlogContent");</script>
 }
 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Blog Yazısı Ekle</h1>
+                <h1>Blog Yazısı Güncelle</h1>
             </div>
         </div>
     </div>
 </section>
-<form asp-controller="AdminBlog" asp-action="CreateBlog" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="BlogUser" value="false" />
-    <input type="hidden" asp-for="BlogConfirm" value="true" />
+@if (Model != null)
+{
+<form asp-controller="User" asp-action="EditBlog" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="BlogId" />
+    <input type="hidden" asp-for="BlogUser" value="true" />
+    <input type="hidden" asp-for="BlogConfirm" value="false" />
     <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
     <section class="content p-3">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Detaylar</h3>
@@ -62,10 +61,12 @@
                                     <div class="custom-file mr-3">
                                         <input type="file" name="file" class="custom-file-input" id="file">
                                         <label class="custom-file-label" for="exampleInputFile">@Model.BlogViewImage</label>
+                                        <span class="text-danger" asp-validation-for="BlogViewImage"></span>
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" id="fileTwo" name="fileTwo" class="custom-file-input">
                                         <label class="custom-file-label" for="exampleInputFile">@Model.BlogDetailImage</label>
+                                        <span class="text-danger" asp-validation-for="BlogDetailImage"></span>
                                     </div>
                                 </div>
                             }
@@ -81,12 +82,40 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Categories</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @if (ViewBag.categories != null)
+                            {
+                                foreach (var item in (List<Category>)ViewBag.categories)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="categoryId" value="@item.CategoryId" id="category@(item.CategoryId)" @(Model.BlogCategories.Any(i => i.CategoryId == item.CategoryId) ? "checked" : "")>
+                                        <label for="category@(item.CategoryId)" class="form-check-label">@item.CategoryName</label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row pb-4">
             <div class="col-12">
-                <a asp-controller="AdminBlog" asp-action="Blog" class="btn btn-danger btn-lg">Vazgeç</a>
+                <a asp-controller="User" asp-action="Blog" class="btn btn-danger btn-lg">Vazgeç</a>
                 <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
             </div>
         </div>
     </section>
 </form>
+}

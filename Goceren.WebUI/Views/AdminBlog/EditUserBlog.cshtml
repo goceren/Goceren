@@ -1,0 +1,132 @@
+﻿@model Blog
+@{
+    ViewData["Title"] = "EditUserBlog";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section scripts{
+    <script src="~/Admin/lib/ckeditor/ckeditor.js"></script>
+    <script>CKEDITOR.replace("BlogContent");</script>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Blog Yazısı Güncelle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model != null)
+{
+    <form asp-controller="AdminBlog" asp-action="EditUserBlog" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="BlogId" />
+        <input type="hidden" asp-for="BlogUser" value="true" />
+        <input type="hidden" asp-for="UserName" value="@Model.UserName" />
+
+        <section class="content p-3">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Detaylar</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="BlogTitle">Başlık</label>
+                                <input asp-for="BlogTitle" type="text" class="form-control">
+                                <span class="text-danger" asp-validation-for="BlogTitle"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BlogContent">Blog Yazısı</label>
+                                <textarea asp-for="BlogContent" class="form-control"></textarea>
+                                <span class="text-danger" asp-validation-for="BlogContent"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BlogAuthor">Yazar</label>
+                                <input asp-for="BlogAuthor" class="form-control">
+                                <span class="text-danger" asp-validation-for="BlogAuthor"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                    </div>
+                                    <input type="datetime" asp-for="BlogDate" class="form-control float-right" value="@DateTime.Now.ToString()">
+                                    <span class="text-danger" asp-validation-for="BlogDate"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Kart(800x375) ve Kapak(1920x900) Fotografı</label>
+                                @if (Model != null)
+                                {
+                                    <div class="input-group">
+                                        <div class="custom-file mr-3">
+                                            <input type="file" name="file" class="custom-file-input" id="file">
+                                            <label class="custom-file-label" for="exampleInputFile">@Model.BlogViewImage</label>
+                                            <span class="text-danger" asp-validation-for="BlogViewImage"></span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" id="fileTwo" name="fileTwo" class="custom-file-input">
+                                            <label class="custom-file-label" for="exampleInputFile">@Model.BlogDetailImage</label>
+                                            <span class="text-danger" asp-validation-for="BlogDetailImage"></span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label>Durum</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input asp-for="isPublished" class="custom-control-input" type="checkbox">
+                                    <label asp-for="isPublished" class="custom-control-label">Aktif</label>
+                                    <span class="text-danger" asp-validation-for="isPublished"></span>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="text-danger">Yayınla</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input asp-for="BlogConfirm" type="checkbox" class="custom-control-input">
+                                    <label class="custom-control-label" asp-for="BlogConfirm">Yazıyı Onayla ve Yayınla</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Kategoriler</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                @if (ViewBag.categories != null)
+                                {
+                                    foreach (var item in (List<Category>)ViewBag.categories)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="categoryId" value="@item.CategoryId" id="category@(item.CategoryId)" @(Model.BlogCategories.Any(i => i.CategoryId == item.CategoryId) ? "checked" : "")>
+                                            <label for="category@(item.CategoryId)" class="form-check-label">@item.CategoryName</label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-4">
+                <div class="col-12">
+                    <a asp-controller="AdminBlog" asp-action="UserBlogs" class="btn btn-danger btn-lg">Vazgeç</a>
+                    <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
+                </div>
+            </div>
+        </section>
+    </form>
+}

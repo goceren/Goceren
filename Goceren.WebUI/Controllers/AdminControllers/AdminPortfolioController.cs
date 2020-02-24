@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Goceren.WebUI.Controllers.AdminControllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
+
     public class AdminPortfolioController : Controller
     {
         private readonly IPortfoliopageService _portfoliopageService;

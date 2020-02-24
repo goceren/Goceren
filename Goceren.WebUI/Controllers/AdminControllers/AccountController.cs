@@ -24,9 +24,24 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             _signinManager = signinManager;
             _emailsender = emailsender;
         }
+        public IActionResult Index()
+        {
+            return RedirectToAction("Login");
+        }
         [Route("/account/register")]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("admin"))
+                {
+                    return Redirect("/admin");
+                }
+                if (User.IsInRole("user"))
+                {
+                    return Redirect("/user");
+                }
+            }
             return View(new RegisterModel());
         }
         [HttpPost, Route("/account/register")]
@@ -46,6 +61,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "user");
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Action("ConfirmMail", "Account", new
                 {
@@ -69,6 +85,17 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         [Route("/account/login")]
         public IActionResult Login(string returnUrl = null)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("admin"))
+                {
+                    return Redirect("/admin");
+                }
+                if (User.IsInRole("user"))
+                {
+                    return Redirect("/user");
+                }
+            }
             return View(new LoginModel()
             {
                 returnUrl = returnUrl
@@ -82,6 +109,8 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 return View(model);
             }
             var user = await _userManager.FindByEmailAsync(model.Email);
+            bool adminRole = await _userManager.IsInRoleAsync(user, "admin");
+            bool userRole = await _userManager.IsInRoleAsync(user, "user");
             if (user == null)
             {
                 ModelState.AddModelError("", "Bu email ile daha önce hesap oluşturulmamış.");
@@ -97,8 +126,14 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             var result = await _signinManager.PasswordSignInAsync(user, model.Password, false, false);
             if (result.Succeeded)
             {
-                
-                return Redirect(model.returnUrl?? "~/admin");
+                if (adminRole)
+                {
+                    return Redirect(model.returnUrl ?? "~/admin");
+                }
+                if (userRole)
+                {
+                    return Redirect(model.returnUrl ?? "~/user");
+                }
             }
             ModelState.AddModelError("", "Email yada şifre yanlış");
             return View(model);
@@ -118,6 +153,17 @@ namespace Goceren.WebUI.Controllers.AdminControllers
 
         public async Task<IActionResult> ConfirmMail(string userId, string token)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("admin"))
+                {
+                    return Redirect("/admin");
+                }
+                if (User.IsInRole("user"))
+                {
+                    return Redirect("/user");
+                }
+            }
             if (userId == null || token == null)
             {
                 TempData.Put("message", new ResultMessage()
@@ -201,6 +247,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             return RedirectToAction("login", "account");
         }
 
+       [Route("/account/resetpassword")]
         public IActionResult ResetPassword(string token)
         {
             if (token == null)
@@ -217,7 +264,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             var model = new ForgotResetPasswordModel { Token = token };
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, Route("/account/resetpassword")]
         public async Task<IActionResult> ResetPasswordAsync(ForgotResetPasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -254,6 +301,63 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             });
             return View(model);
         }
+        [Route("/account/accessdenied")]
+        public IActionResult AccessDenied()
+        {
+            TempData.Put("message", new ResultMessage()
+            {
+                Title = "İzinsiz Erişim",
+                Message = "Bu sayfaya giriş izniniz yok.",
+                Css = "danger"
+            });
+            return View();
+        }
+        
+        [Route("/account/changepassword")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
 
+        [HttpPost, Route("/account/changepassword")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifre Değiştir",
+                        Message = "Lütfen önce giriş yapınız.",
+                        Css = "danger"
+                    });
+                    return RedirectToAction("Login");
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await _signinManager.RefreshSignInAsync(user);
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifremi Değiştir",
+                        Message = "Şifreniz başarı ile değiştirildi.",
+                        Css = "success"
+                    });
+                    return RedirectToAction("Login", "Account");
+                }
+                TempData.Put("message", new ResultMessage()
+                {
+                    Title = "Şifremi Değiştir",
+                    Message = "Şifrenizi yanlış girdiniz...",
+                    Css = "danger"
+                });
+                return View();
+            }
+            return View(model);
+        }
     }
 }

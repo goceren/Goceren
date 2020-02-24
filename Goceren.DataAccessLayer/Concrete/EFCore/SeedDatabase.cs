@@ -18,70 +18,7 @@ namespace Goceren.DataAccessLayer.Concrete.EFCore
                 if (context.Navbar.Count() == 0)
                 {
                     context.Navbar.AddRange(Navbars);
-                }
-                if (context.Homepage.Count() == 0)
-                {
-                    context.Homepage.AddRange(Homepages);
-                }
-                if (context.Menu.Count() == 0)
-                {
-                    context.Menu.AddRange(Menus);
-                }
-                if (context.Social.Count() == 0)
-                {
-                    context.Social.AddRange(Socials);
-                }
-
-                if (context.WhatIDo.Count() == 0)
-                {
-                    context.WhatIDo.AddRange(WhatIDos);
-                }
-                if (context.Settings.Count() == 0)
-                {
-                    context.Settings.AddRange(Settings);
-                }
-                if (context.Resumepage.Count() == 0)
-                {
-                    context.Resumepage.AddRange(Resumepages);
-                }
-
-                if (context.Tweets.Count() == 0)
-                {
-                    context.Tweets.AddRange(Tweets);
-                }
-                if (context.Portfoliopage.Count() == 0)
-                {
-                    context.Portfoliopage.AddRange(Portfoliopages);
-                }                
-                if (context.Blogpage.Count() == 0)
-                {
-                    context.Blogpage.AddRange(Blogpages);
-                }
-                if (context.Mediumpage.Count() == 0)
-                {
-                    context.Mediumpage.AddRange(Mediumpages);
-                }
-                if (context.Category.Count() == 0)
-                {
-                    context.Category.AddRange(Category);
-                }
-                if (context.Blog.Count() == 0)
-                {
-                    context.Blog.AddRange(Blogs);
-                    context.AddRange(BlogCategory);
-                }
-                if (context.Skills.Count() == 0)
-                {
-                    context.Skills.AddRange(Skills);
-                }
-                if (context.Education.Count() == 0)
-                {
-                    context.Education.AddRange(Educations);
-                }
-                if (context.Experience.Count() == 0)
-                {
-                    context.Experience.AddRange(Experiences);
-                }
+                }             
                 context.SaveChanges();
             }
         }
@@ -89,6 +26,12 @@ namespace Goceren.DataAccessLayer.Concrete.EFCore
         private static Navbar[] Navbars =
         {
             new Navbar() {NavbarTitle = "Veli Yavuz Göçeren", NavbarImage="Deneme", Cpyright="2020", isApproved=true }
+        };
+
+        private static MenuType[] MenuTypes =
+        {
+            new MenuType() {MenuTypeName = "Menu"},
+            new MenuType() {MenuTypeName = "Link"},
         };
         private static Menu[] Menus =
         {

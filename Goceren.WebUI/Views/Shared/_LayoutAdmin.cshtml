@@ -19,7 +19,14 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-controller="Admin" asp-action="Index" class="nav-link">Anasayfa</a>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-controller="Admin" asp-action="Index" class="nav-link">Anasayfa</a>
+                    }
+                    @if (User.IsInRole("user"))
+                    {
+                        <a asp-controller="User" asp-action="Index" class="nav-link">Anasayfa</a>
+                    }
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a asp-controller="Home" asp-action="Index" target="_blank" class="nav-link">Siteyi Gör</a>
@@ -27,7 +34,10 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-out-alt"></i></a>
+                    <a class="nav-link" asp-controller="Account" asp-action="ChangePassword"><i class="fas fa-cog" title="Şifre Değiştir"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-out-alt" title="Çıkış"></i></a>
                 </li>
             </ul>
         </nav>

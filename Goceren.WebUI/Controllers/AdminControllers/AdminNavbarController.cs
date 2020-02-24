@@ -14,7 +14,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Goceren.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
+
     public class AdminNavbarController : Controller
     {
         private readonly INavbarService _navbarService;

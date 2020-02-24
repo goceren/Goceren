@@ -1,13 +1,14 @@
-﻿@model IEnumerable<Blog>
+﻿@model IEnumerable<UserModel>
 @{
-    ViewData["Title"] = "Blog";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Blog</h1>
+                <h1>Kullanıcılar</h1>
             </div>
         </div>
     </div>
@@ -15,82 +16,67 @@
 <section class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Bloglar</h3>
-            <div class="text-right">
-                <a asp-controller="AdminBlog" asp-action="UserBlogs" class="btn btn-success mr-5" style="color:white;">Bekleyen İstekler (@ViewBag.count)</a>
-            </div>
+            <h3 class="card-title">Liste</h3>
         </div>
         <div class="card-body p-0">
             <table class="table table-striped projects">
                 <thead>
                     <tr>
-                        <th style="width: 1%">
+                        <th style="width: 15%">
                             ID
                         </th>
                         <th style="width: 10%">
-                            Başlık
-                        </th>
-                        <th style="width: 15%">
-                            İçerik
+                            Kullanıcı Adı
                         </th>
                         <th style="width: 10%">
-                            Yazar
+                            Email
                         </th>
                         <th style="width: 10%">
-                            Tarih
+                            Telefon
                         </th>
-                        <th style="width: 10%">
-                            View Resim
+                        <th style="width: 10%; text-align:center;">
+                            Email Onayı
                         </th>
-                        <th style="width: 8%" class="text-center">
-                            Durum
+                        <th style="width: 10%; text-align:center;">
+                            Rolü
                         </th>
-                        <th class="text-center" style="width: 15%">
-                            <a class="btn btn-primary btn-sm text-center" asp-controller="AdminBlog" asp-action="CreateBlog">
-                                <i class="fas fa-plus">
-                                </i>
-                                Yeni Ekle
-                            </a>
+                        <th class="text-center" style="width: 10%">
+
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+
+                <tbody class="form-group">
                     @if (Model != null)
                     {
                         @foreach (var item in Model)
                         {
                             <tr>
                                 <td>
-                                    <a>@item.BlogId</a>
+                                    <a>@item.ID</a>
                                 </td>
                                 <td>
                                     <a>
-                                        @item.BlogTitle
+                                        @item.UserName
                                     </a>
                                 </td>
                                 <td>
                                     <a>
-                                        @if (@Html.Raw(item.BlogContent).ToString().Length < 45)
-                                        {
-                                            @: @Html.Raw(item.BlogContent)
-                                        }
-                                        else
-                                        {
-                                            @: @Html.Raw(item.BlogContent).ToString().Substring(0, 45) ...
-                                        }
+                                        @item.Email
                                     </a>
                                 </td>
                                 <td>
-                                    <a asp-controller="AdminBlog" asp-action="Blog" asp-route-userName="@item.UserName">@item.UserName</a>                                    
+                                    <a>
+                                        @item.Phone
+                                    </a>
                                 </td>
-                                <td>
-                                    <a>@item.BlogDate</a>
-                                </td>
-                                <td>
-                                    <a>@item.BlogViewImage</a>
+                                <td class="text-center">
+                                    <a>
+                                        @item.RoleId
+                                    </a>
                                 </td>
                                 <td class="project-state">
-                                    @if (item.isPublished)
+                                    @if (item.Confirmed)
                                     {
                                         <span class="badge badge-success text-center">Aktif</span>
                                     }
@@ -100,12 +86,12 @@
                                     }
                                 </td>
                                 <td class="project-actions text-center">
-                                    <a class="btn btn-info btn-sm" asp-controller="AdminBlog" asp-action="EditBlog" asp-route-blogId="@item.BlogId">
-                                        <i class="fas fa-pencil-alt">
+                                    <a class="btn btn-info btn-sm" asp-controller="AdminManageUser" asp-action="EditUser" asp-route-userName="@item.UserName">
+                                        <i class="fas fa-edit">
                                         </i>
                                         Düzenle
                                     </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="AdminBlog" asp-action="DeleteBlog" asp-route-blogId="@item.BlogId">
+                                    <a class="btn btn-danger btn-sm" asp-controller="AdminManageUser" asp-action="Delete" asp-route-userName="@item.UserName">
                                         <i class="fas fa-trash">
                                         </i>
                                         Sil
@@ -119,5 +105,3 @@
         </div>
     </div>
 </section>
-
-

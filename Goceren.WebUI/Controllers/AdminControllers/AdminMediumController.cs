@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Goceren.WebUI.Controllers.AdminControllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
+
     public class AdminMediumController : Controller
     {
         private readonly IMediumpageService _mediumpageService;

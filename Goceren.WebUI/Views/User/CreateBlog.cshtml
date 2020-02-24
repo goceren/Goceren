@@ -3,6 +3,7 @@
     ViewData["Title"] = "CreateBlog";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 @section scripts{
     <script src="~/Admin/lib/ckeditor/ckeditor.js"></script>
     <script>CKEDITOR.replace("BlogContent");</script>
@@ -17,9 +18,9 @@
         </div>
     </div>
 </section>
-<form asp-controller="AdminBlog" asp-action="CreateBlog" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="BlogUser" value="false" />
-    <input type="hidden" asp-for="BlogConfirm" value="true" />
+<form asp-controller="User" asp-action="CreateBlog" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="BlogUser" value="true" />
+    <input type="hidden" asp-for="BlogConfirm" value="false" />
     <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
     <section class="content p-3">
         <div class="row">
@@ -84,7 +85,7 @@
         </div>
         <div class="row pb-4">
             <div class="col-12">
-                <a asp-controller="AdminBlog" asp-action="Blog" class="btn btn-danger btn-lg">Vazgeç</a>
+                <a asp-controller="User" asp-action="Blog" class="btn btn-danger btn-lg">Vazgeç</a>
                 <input type="submit" value="Kaydet" class="btn btn-success float-right btn-lg">
             </div>
         </div>

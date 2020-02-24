@@ -10,10 +10,11 @@ using Goceren.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Goceren.WebUI.Controllers.AdminControllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class AdminBlogController : Controller
     {
         private readonly IBlogService _blogService;
@@ -63,7 +64,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                     Css = "success"
                 });
                 return RedirectToAction("Index");
-            }         
+            }
             return View(entity);
         }
 
@@ -86,7 +87,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                     Css = "success"
                 });
                 return RedirectToAction("Index");
-            }         
+            }
             return View(model);
         }
 
@@ -118,9 +119,14 @@ namespace Goceren.WebUI.Controllers.AdminControllers
 
         // Blogs
         [Route("/admin/blog")]
-        public IActionResult Blog()
-        {    
-            return View(_blogService.GetAllWithCategory());
+        public IActionResult Blog(string userName)
+        {
+            ViewBag.count = _blogService.GetAllWithCategory().Where(i => i.isPublished == true && i.BlogUser == true && i.SawAdmin == false).ToList().Count();
+            if (string.IsNullOrEmpty(userName))
+            {
+                return View(_blogService.GetAllWithCategory().Where(i => i.BlogConfirm == true));
+            }
+            return View(_blogService.GetAllWithCategory().Where(i => i.BlogConfirm == true && i.UserName == userName));
         }
 
         // Create Blog
@@ -151,7 +157,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 entity.BlogDetailImage = fileTwo.FileName;
             }
             if (ModelState.IsValid)
-            {   
+            {
                 _blogService.Create(entity);
                 TempData.Put("message", new ResultMessage()
                 {
@@ -160,7 +166,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                     Css = "success"
                 });
                 return RedirectToAction("Blog");
-            }           
+            }
             return View(entity);
         }
         // Edit Blog
@@ -201,7 +207,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 entity.BlogDetailImage = blogs.BlogDetailImage;
             }
             if (ModelState.IsValid)
-            {             
+            {
                 _blogService.Update(entity, categoryId);
                 ViewBag.categories = _categoryService.GetAll().Where(i => i.CategoryType == "Blog").ToList();
                 TempData.Put("message", new ResultMessage()
@@ -211,9 +217,9 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                     Css = "success"
                 });
                 return RedirectToAction("Blog");
-            }           
+            }
             return View(entity);
-            
+
         }
 
         // Delete Blog
@@ -311,7 +317,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 });
                 return RedirectToAction("Categories");
             }
-            return View(entity); 
+            return View(entity);
         }
 
         // Delete Category
@@ -343,6 +349,111 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 Css = "success"
             });
             return RedirectToAction("Categories");
+        }
+
+
+        // ---------------------------------------------------------- USER BLOGS -----------------------------------------------------------
+
+
+
+        // Users Blogs
+        [Route("/admin/users/blog")]
+        public IActionResult UserBlogs()
+        {
+            return View(_blogService.GetAllWithCategory().Where(i => i.BlogUser == true && i.isPublished == true));
+        }
+
+        // Edit Users Blog
+        [Route("/admin/users/blog/edit/{id?}")]
+        public IActionResult EditUserBlog(int blogId)
+        {
+            ViewBag.categories = _categoryService.GetAll().Where(i => i.CategoryType == "Blog").ToList();
+            var model = _blogService.GetBlogDetails(blogId);
+            if (model != null)
+            {
+                model.SawAdmin = true;
+                _blogService.Update(model);
+            }
+            return View(model);
+        }
+        [HttpPost, Route("/admin/users/blog/edit/{id?}")]
+        public async Task<IActionResult> EditUserBlog(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
+        {
+            var blogs = _blogService.GetById(entity.BlogId);
+            if (file != null)
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                entity.BlogViewImage = file.FileName;
+            }
+            else
+            {
+                entity.BlogViewImage = blogs.BlogViewImage;
+            }
+            if (fileTwo != null)
+            {
+                var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
+                using (var streamCV = new FileStream(pathCV, FileMode.Create))
+                {
+                    await fileTwo.CopyToAsync(streamCV);
+                }
+                entity.BlogDetailImage = fileTwo.FileName;
+            }
+            else
+            {
+                entity.BlogDetailImage = blogs.BlogDetailImage;
+            }
+            if (ModelState.IsValid)
+            {
+                entity.SawAdmin = true;
+                _blogService.Update(entity, categoryId);
+                ViewBag.categories = _categoryService.GetAll().Where(i => i.CategoryType == "Blog").ToList();
+                TempData.Put("message", new ResultMessage()
+                {
+                    Title = "Bildirim",
+                    Message = "Blog başarıyla güncellendi.",
+                    Css = "success"
+                });
+                return RedirectToAction("UserBlogs");
+            }
+            return View(entity);
+
+        }
+
+        // Delete Users Blog
+
+        [Route("/admin/users/blog/delete/{id?}")]
+        public IActionResult DeleteUserBlog(int blogId)
+        {
+            return View(_blogService.GetById(blogId));
+        }
+
+        [HttpPost, ActionName("DeleteUserBlog"), Route("/admin/users/blog/delete/{id?}")]
+        public IActionResult DeleteConfirmedUserBlog(int blogId)
+        {
+            var entity = _blogService.GetById(blogId);
+            var blogcategories = _blogcategoryService.GetAll().Where(i => i.BlogId == blogId).ToList();
+            if (entity != null)
+            {
+                if (blogcategories != null)
+                {
+                    foreach (var item in blogcategories)
+                    {
+                        _blogcategoryService.Delete(item);
+                    }
+                }
+                _blogService.Delete(entity);
+            }
+            TempData.Put("message", new ResultMessage()
+            {
+                Title = "Bildirim",
+                Message = "Blog başarıyla silindi.",
+                Css = "success"
+            });
+            return RedirectToAction("UserBlogs");
         }
     }
 }
