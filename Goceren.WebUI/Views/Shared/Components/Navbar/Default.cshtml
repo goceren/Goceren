@@ -10,6 +10,7 @@
             <div class="site-title-block">
                 <div class="site-title">@Model.Navbar.NavbarTitle</div>
             </div>
+
             <div class="site-nav">
                 <ul id="nav" class="site-main-menu">
                     @if (Model.Menu != null)
@@ -41,7 +42,7 @@
                     <img src="~/Site/img/@Model.Navbar.NavbarImage" alt="@Model.Navbar.NavbarTitle">
                 </a>
             </div>
-            <div class="mobile-site-title"><a asp-controller="Home" asp-action="Index">@Model.Navbar.NavbarTitle</a></div>
+            <div class="mobile-site-title"><a asp-controller="Home" asp-action="Index">@Model.Navbar.NavbarTitle</a></div>           
         </div>
 
         <a class="menu-toggle mobile-visible">

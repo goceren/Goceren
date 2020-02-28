@@ -20,8 +20,8 @@ namespace Goceren.WebUI.Models.AdminModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Boş olamaz")]
-        [DataType(DataType.Password)]
-        [Compare("Password")]
+        [DataType(DataType.Password, ErrorMessage = "Şifre yeterince güçlü değil")]
+        [Compare("Password", ErrorMessage = "Şifreler Uyuşmuyor")]
         public string RePassword { get; set; }
     }
 }

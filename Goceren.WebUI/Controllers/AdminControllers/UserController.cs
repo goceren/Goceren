@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using Goceren.Business.Abstract;
 using Goceren.Entities;
 using Goceren.WebUI.Extensions;
+using Goceren.WebUI.Identity;
 using Goceren.WebUI.Models;
+using Goceren.WebUI.Models.AdminModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Goceren.WebUI.Controllers.AdminControllers
@@ -19,13 +22,16 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         private readonly IBlogService _blogService;
         private readonly ICategoryService _categoryService;
         private readonly IBlogCategoryService _blogcategoryService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signinManager;
 
-
-        public UserController(IBlogService blogService, ICategoryService categoryService, IBlogCategoryService blogcategoryService)
+        public UserController(IBlogService blogService, ICategoryService categoryService, IBlogCategoryService blogcategoryService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signinManager)
         {
             _blogService = blogService;
             _categoryService = categoryService;
+            _userManager = userManager;
             _blogcategoryService = blogcategoryService;
+            _signinManager = signinManager;
 
         }
         [Route("/user")]
@@ -46,7 +52,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         [HttpPost,Route("user/blog/create")]
         public async Task<IActionResult> CreateBlogAsync(Blog entity, IFormFile file, IFormFile fileTwo)
         {
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -55,7 +61,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 }
                 entity.BlogViewImage = file.FileName;
             }
-            if (fileTwo != null)
+            if (fileTwo != null && fileTwo.ContentType.Contains("image"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -89,7 +95,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> EditBlogAsync(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
         {
             var blogs = _blogService.GetById(entity.BlogId);
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -102,7 +108,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             {
                 entity.BlogViewImage = blogs.BlogViewImage;
             }
-            if (fileTwo != null)
+            if (fileTwo != null && fileTwo.ContentType.Contains("image"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -162,6 +168,53 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 Css = "success"
             });
             return RedirectToAction("Blog");
+        }
+
+        [Route("/user/changepassword")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost, Route("/user/changepassword")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifre Değiştir",
+                        Message = "Lütfen önce giriş yapınız.",
+                        Css = "danger"
+                    });
+                    return RedirectToAction("Login");
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await _signinManager.RefreshSignInAsync(user);
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifremi Değiştir",
+                        Message = "Şifreniz başarı ile değiştirildi.",
+                        Css = "success"
+                    });
+                    return RedirectToAction("Login", "Account");
+                }
+                TempData.Put("message", new ResultMessage()
+                {
+                    Title = "Şifremi Değiştir",
+                    Message = "Şifrenizi yanlış girdiniz...",
+                    Css = "danger"
+                });
+                return View();
+            }
+            return View(model);
         }
     }
 }

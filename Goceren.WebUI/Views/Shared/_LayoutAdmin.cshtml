@@ -34,7 +34,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="ChangePassword"><i class="fas fa-cog" title="Şifre Değiştir"></i></a>
+                    <a class="nav-link" asp-controller="@((User.IsInRole("admin")) ? "Admin" : "User")" asp-action="ChangePassword"><i class="fas fa-cog" title="Şifre Değiştir"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-out-alt" title="Çıkış"></i></a>

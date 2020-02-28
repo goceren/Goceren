@@ -8,9 +8,11 @@ using Goceren.Entities;
 using Goceren.WebUI.Extensions;
 using Goceren.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Goceren.WebUI.Controllers
 {
@@ -58,9 +60,10 @@ namespace Goceren.WebUI.Controllers
         [HttpPost, Route("/admin/navbar/create")]
         public async Task<IActionResult> Create(Navbar entity, IFormFile file)
         {
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
+
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -68,7 +71,7 @@ namespace Goceren.WebUI.Controllers
                 entity.NavbarImage = file.FileName;
             }
             if (ModelState.IsValid)
-            {           
+            {
                 _navbarService.Create(entity);
                 TempData.Put("message", new ResultMessage()
                 {
@@ -92,14 +95,16 @@ namespace Goceren.WebUI.Controllers
         {
             var model = _navbarService.GetById(entity.NavbarId);
 
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
+
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
                 entity.NavbarImage = file.FileName;
+
             }
             else
             {
@@ -116,7 +121,7 @@ namespace Goceren.WebUI.Controllers
                 });
                 return RedirectToAction("Index");
             }
-            return View(entity);  
+            return View(entity);
         }
 
         // Delete Navbar
@@ -290,7 +295,7 @@ namespace Goceren.WebUI.Controllers
         [HttpPost, Route("/admin/menutype/edit/{id?}")]
         public IActionResult EditMenuType(MenuType entity)
         {
-            
+
             if (ModelState.IsValid)
             {
                 _menutypeService.Update(entity);
@@ -416,7 +421,7 @@ namespace Goceren.WebUI.Controllers
                     Css = "success"
                 });
                 return RedirectToAction("Social");
-            }  
+            }
             return View(entity);
         }
 

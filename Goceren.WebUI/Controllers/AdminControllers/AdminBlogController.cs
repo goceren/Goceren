@@ -138,7 +138,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         [HttpPost, Route("/admin/blog/create")]
         public async Task<IActionResult> CreateBlogAsync(Blog entity, IFormFile file, IFormFile fileTwo)
         {
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -147,7 +147,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 }
                 entity.BlogViewImage = file.FileName;
             }
-            if (fileTwo != null)
+            if (fileTwo != null && fileTwo.ContentType.Contains("image"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -180,7 +180,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> EditBlogAsync(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
         {
             var blogs = _blogService.GetById(entity.BlogId);
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -193,7 +193,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             {
                 entity.BlogViewImage = blogs.BlogViewImage;
             }
-            if (fileTwo != null)
+            if (fileTwo != null && fileTwo.ContentType.Contains("image"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -380,7 +380,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> EditUserBlog(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
         {
             var blogs = _blogService.GetById(entity.BlogId);
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -393,7 +393,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             {
                 entity.BlogViewImage = blogs.BlogViewImage;
             }
-            if (fileTwo != null)
+            if (fileTwo != null && fileTwo.ContentType.Contains("image"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", fileTwo.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))

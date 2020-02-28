@@ -68,7 +68,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                     userId = user.Id,
                     token = code
                 });
-                await _emailsender.SendEmailAsync(model.Email, "Emailinizi onaylayınız.", $"Lütfen hesabınızı onaylamak için linke <a href='https://localhost:44349{callbackUrl}'>tıklayınız.</a> ");
+                await _emailsender.SendEmailAsync(model.Email, "Emailinizi onaylayınız.", $"Lütfen hesabınızı onaylamak için linke <a href='https://goceren.com{callbackUrl}'>tıklayınız.</a> ");
 
                 TempData.Put("message", new ResultMessage()
                 {
@@ -123,7 +123,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 return View(model);
             }
 
-            var result = await _signinManager.PasswordSignInAsync(user, model.Password, false, false);
+            var result = await _signinManager.PasswordSignInAsync(user, model.Password, false, true);
             if (result.Succeeded)
             {
                 if (adminRole)
@@ -235,7 +235,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 token = code
             });
 
-            await _emailsender.SendEmailAsync(email, "Şifre Sıfırlama", $"Lütfen şifrenizi sıfırlamak için buraya <a href='https://localhost:44349{callbackUrl}'>tıklayınız.</a> ");
+            await _emailsender.SendEmailAsync(email, "Şifre Sıfırlama", $"Lütfen şifrenizi sıfırlamak için buraya <a href='https://goceren.com{callbackUrl}'>tıklayınız.</a> ");
 
 
             TempData.Put("message", new ResultMessage()
@@ -311,53 +311,6 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 Css = "danger"
             });
             return View();
-        }
-        
-        [Route("/account/changepassword")]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        [HttpPost, Route("/account/changepassword")]
-        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                {
-                    TempData.Put("message", new ResultMessage()
-                    {
-                        Title = "Şifre Değiştir",
-                        Message = "Lütfen önce giriş yapınız.",
-                        Css = "danger"
-                    });
-                    return RedirectToAction("Login");
-                }
-
-                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-
-                if (result.Succeeded)
-                {
-                    await _signinManager.RefreshSignInAsync(user);
-                    TempData.Put("message", new ResultMessage()
-                    {
-                        Title = "Şifremi Değiştir",
-                        Message = "Şifreniz başarı ile değiştirildi.",
-                        Css = "success"
-                    });
-                    return RedirectToAction("Login", "Account");
-                }
-                TempData.Put("message", new ResultMessage()
-                {
-                    Title = "Şifremi Değiştir",
-                    Message = "Şifrenizi yanlış girdiniz...",
-                    Css = "danger"
-                });
-                return View();
-            }
-            return View(model);
-        }
+        }             
     }
 }

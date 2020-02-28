@@ -49,7 +49,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         [HttpPost, Route("/admin/medium/create")]
         public async Task<IActionResult> CreateAsync(Mediumpage entity, IFormFile file, IFormFile filedetail)
         {
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -58,7 +58,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 }
                 entity.BackgroundImage = file.FileName;
             }
-            if (filedetail != null)
+            if (filedetail != null && filedetail.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", filedetail.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -91,7 +91,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> Edit(Mediumpage entity, IFormFile file, IFormFile filedetail)
         {
             var model = _mediumpageService.GetById(entity.MediumpageId);
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -104,9 +104,9 @@ namespace Goceren.WebUI.Controllers.AdminControllers
             {
                 entity.BackgroundImage = _mediumpageService.GetById(model.MediumpageId).BackgroundImage;
             }
-            if (filedetail != null)
+            if (filedetail != null && filedetail.ContentType.Contains("image"))
             {
-                var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CV", filedetail.FileName);
+                var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", filedetail.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
                 {
                     await filedetail.CopyToAsync(streamCV);

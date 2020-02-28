@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Goceren.Business.Abstract;
+using Goceren.Entities;
 using Goceren.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Tweetinvi;
@@ -17,15 +18,30 @@ namespace Goceren.WebUI.Controllers
         private readonly ISubtitleService _subtitleService;
         private readonly IWhatIDoService _whatIDoService;
         private readonly ITweetsService _tweetsService;
-        public HomeController(IHomepageService homepageService, ISubtitleService subtitleService, IWhatIDoService whatIDoService, ITweetsService tweetsService)
+        private readonly IViewersService _viewersService;
+        public HomeController(IHomepageService homepageService, ISubtitleService subtitleService, IWhatIDoService whatIDoService, ITweetsService tweetsService, IViewersService viewersService)
         {
             _homepageService = homepageService;
             _subtitleService = subtitleService;
             _whatIDoService = whatIDoService;
             _tweetsService = tweetsService;
+            _viewersService = viewersService;
         }
         public IActionResult Index()
         {
+            try
+            {
+                var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                var arti = Request.HttpContext.Connection.RemotePort.ToString();
+                var clientDetails = ip + ":" + arti;
+                if (!_viewersService.GetAll().Any(i => i.ViewBlog == -1 && i.IP == clientDetails && i.Date.Contains(DateTime.Now.Date.ToString())))
+                {
+                    _viewersService.Create(new Viewers() { IP = clientDetails, ViewBlog = -1, Date = DateTime.Now.Date.ToString()});
+                }
+            }
+            catch (Exception)
+            {
+            }
             HomepageModels model = new HomepageModels();
             List<TweetsModel> tweetsModel = new List<TweetsModel>();
             try
@@ -53,7 +69,7 @@ namespace Goceren.WebUI.Controllers
                 Auth.SetUserCredentials(model.Tweets.ConsumerKey.Trim(), model.Tweets.ConsumerSecret.Trim(), model.Tweets.AccessToken.Trim(), model.Tweets.AccessTokenSecret.Trim());
                 var user = Tweetinvi.User.GetAuthenticatedUser();
                 var userIdentifier = new UserIdentifier(model.Tweets.TwitterUsername.Trim());
-                var userTimelineParameters = new UserTimelineParameters { MaximumNumberOfTweetsToRetrieve = 21 };
+                var userTimelineParameters = new UserTimelineParameters { MaximumNumberOfTweetsToRetrieve = 11 };
                 var tweets = Timeline.GetUserTimeline(userIdentifier, userTimelineParameters);
                 TwitterModel twModel = new TwitterModel
                 {

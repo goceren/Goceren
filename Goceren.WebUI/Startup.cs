@@ -48,7 +48,7 @@ namespace Goceren.WebUI
 
                 //options.User.AllowedUserNameCharacters = "";
                 options.User.RequireUniqueEmail = true;
-
+                
                 options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
 
@@ -59,14 +59,11 @@ namespace Goceren.WebUI
                 options.LoginPath = "/account/login";
                 options.LogoutPath = "/account/logout";
                 options.AccessDeniedPath = "/account/accessdenied";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.Cookie.Name = ".Goceren.Security.Cookie";
                 options.SlidingExpiration = true;
-                options.Cookie = new CookieBuilder
-                {
-                    HttpOnly = true,
-                    Name = ".Goceren.Security.Cookie",
-                    SameSite = SameSiteMode.Strict
-                };
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
             });
 
             services.AddScoped<INavbarDAL, EFCoreNavbarDAL>();

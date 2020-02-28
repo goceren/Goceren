@@ -78,14 +78,14 @@ namespace Goceren.WebUI.Controllers
                 blogpageModel.Blog = null;
                 blogpageModel.Categories = null;
             }
-            blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true && i.BlogConfirm == true).ToList();
-
-            var clientDetails = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            blogpageModel.Blogs = _blogService.GetAllWithCategory().Where(i => i.isPublished == true && i.BlogConfirm == true).ToList();            
             try
             {
+                var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                var arti = Request.HttpContext.Connection.RemotePort.ToString();
+                var clientDetails = ip + ":" + arti;
                 if (!(_viewersService.GetAll().Any(i => i.ViewBlog == BlogId && i.IP == clientDetails)))
                 {
-
                     _viewersService.Create(new Viewers() { IP = clientDetails, ViewBlog = BlogId });
                     var blog = _blogService.GetById(BlogId);
                     blog.ViewCount++;

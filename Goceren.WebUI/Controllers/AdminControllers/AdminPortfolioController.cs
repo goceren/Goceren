@@ -54,7 +54,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         [HttpPost, Route("/admin/portfolio/create")]
         public async Task<IActionResult> CreateAsync(Portfoliopage entity, IFormFile file)
         {
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -87,7 +87,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> Edit(Portfoliopage entity, IFormFile file)
         {
             var model = _portfoliopageService.GetById(entity.PortfoliopageId);
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))

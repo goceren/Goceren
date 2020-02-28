@@ -83,7 +83,7 @@ namespace Goceren.WebUI.Controllers
         {
             var model = _settingsService.GetById(entity.SettingsId);
 
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))

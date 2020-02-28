@@ -9,5 +9,6 @@ namespace Goceren.Entities
         public int ViewersId { get; set; }
         public string IP { get; set; }
         public int ViewBlog { get; set; }
+        public string Date { get; set; }
     }
 }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Goceren.Business.Abstract;
 using Goceren.Entities;
 using Goceren.WebUI.Extensions;
+using Goceren.WebUI.Identity;
 using Goceren.WebUI.Models;
 using Goceren.WebUI.Models.AdminModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Goceren.WebUI.Controllers
@@ -22,13 +24,19 @@ namespace Goceren.WebUI.Controllers
         private readonly IHomeSubtitleService _homesubtitleService;
         private readonly IWhatIDoService _whatIDoService;
         private readonly ITweetsService _tweetsService;
-        public AdminController(IHomepageService homepageService, ISubtitleService subtitleService, IWhatIDoService whatIDoService, ITweetsService tweetsService, IHomeSubtitleService homesubtitleService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signinManager;
+        private readonly IViewersService _viewersService;
+        public AdminController(IHomepageService homepageService, ISubtitleService subtitleService, IWhatIDoService whatIDoService, ITweetsService tweetsService, IHomeSubtitleService homesubtitleService, SignInManager<ApplicationUser> signinManager, UserManager<ApplicationUser> userManager, IViewersService viewersService)
         {
             _homepageService = homepageService;
             _subtitleService = subtitleService;
             _whatIDoService = whatIDoService;
             _tweetsService = tweetsService;
+            _userManager = userManager;
+            _signinManager = signinManager;
             _homesubtitleService = homesubtitleService;
+            _viewersService = viewersService;
         }
         // ----------------------------------------------------   HOMEPAGE  -----------------------------------------------------
 
@@ -37,7 +45,16 @@ namespace Goceren.WebUI.Controllers
         public IActionResult Index()
         {
             var model = _homepageService.GetAll();
+            try
+            {
+                ViewBag.viewersToday = _viewersService.GetAll().Where(i => i.ViewBlog == -1 && i.Date.Contains(DateTime.Now.Date.ToString())).Count();
+                ViewBag.viewersAll = _viewersService.GetAll().Where(i => i.ViewBlog == -1).Count();
+            }
+            catch (Exception)
+            {
+            }         
             ViewBag.items = model.Where(i => i.isApproved == true).Count();
+            
             if (ViewBag.items == 1)
             {
                 ViewBag.alert = false;
@@ -60,7 +77,7 @@ namespace Goceren.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (file != null)
+                if (file != null && file.ContentType.Contains("image"))
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                     using (var stream = new FileStream(path, FileMode.Create))
@@ -69,7 +86,7 @@ namespace Goceren.WebUI.Controllers
                     }
                     entity.AboutImage = file.FileName;
                 }
-                if (fileCV != null)
+                if (fileCV != null && fileCV.ContentType.Contains("application/pdf"))
                 {
                     var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CV", fileCV.FileName);
                     using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -103,7 +120,7 @@ namespace Goceren.WebUI.Controllers
         {
             var model = _homepageService.GetByIdWithSubtitles(entity.HomepageId);
             ViewBag.subtitles = _subtitleService.GetAll();
-            if (file != null)
+            if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -116,7 +133,7 @@ namespace Goceren.WebUI.Controllers
             {
                 entity.AboutImage = _homepageService.GetById(model.HomepageId).AboutImage;
             }
-            if (fileCV != null)
+            if (fileCV != null && fileCV.ContentType.Contains("application/pdf"))
             {
                 var pathCV = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\CV", fileCV.FileName);
                 using (var streamCV = new FileStream(pathCV, FileMode.Create))
@@ -505,6 +522,53 @@ namespace Goceren.WebUI.Controllers
                 Css = "success"
             });
             return RedirectToAction("Twitter");
+        }
+
+        [Route("/admin/changepassword")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost, Route("/admin/changepassword")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifre Değiştir",
+                        Message = "Lütfen önce giriş yapınız.",
+                        Css = "danger"
+                    });
+                    return RedirectToAction("Login");
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await _signinManager.RefreshSignInAsync(user);
+                    TempData.Put("message", new ResultMessage()
+                    {
+                        Title = "Şifremi Değiştir",
+                        Message = "Şifreniz başarı ile değiştirildi.",
+                        Css = "success"
+                    });
+                    return RedirectToAction("Login", "Account");
+                }
+                TempData.Put("message", new ResultMessage()
+                {
+                    Title = "Şifremi Değiştir",
+                    Message = "Şifrenizi yanlış girdiniz...",
+                    Css = "danger"
+                });
+                return View();
+            }
+            return View(model);
         }
     }
 }
