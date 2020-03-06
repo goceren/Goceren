@@ -65,6 +65,7 @@ namespace Goceren.DataAccessLayer.Concrete.EFCore
                     blog.BlogConfirm = entity.BlogConfirm;
                     blog.BlogUser = entity.BlogUser;
                     blog.SawAdmin = entity.SawAdmin;
+                    blog.ViewCount = entity.ViewCount;
                     blog.BlogCategories = id.Select(catid => new BlogCategory()
                     {
                         BlogId = entity.BlogId,

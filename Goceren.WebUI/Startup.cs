@@ -59,7 +59,7 @@ namespace Goceren.WebUI
                 options.LoginPath = "/account/login";
                 options.LogoutPath = "/account/logout";
                 options.AccessDeniedPath = "/account/accessdenied";
-                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.ExpireTimeSpan = TimeSpan.FromHours(3);
                 options.Cookie.Name = ".Goceren.Security.Cookie";
                 options.SlidingExpiration = true;
                 options.Cookie.SameSite = SameSiteMode.Strict;
@@ -131,7 +131,8 @@ namespace Goceren.WebUI
 
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc();
+            
+            services.AddMvc().AddXmlSerializerFormatters();
 
         }
 
@@ -143,9 +144,10 @@ namespace Goceren.WebUI
                 app.UseDeveloperExceptionPage();
                 //SeedDatabase.Seed();
             }
+            
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseStaticFiles();
+            
             app.UseStatusCodePages();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -153,7 +155,8 @@ namespace Goceren.WebUI
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}/{idextra?}");
             });
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             SeedIdentity.Seed(userManager, roleManager, Configuration).Wait();
         }
     }

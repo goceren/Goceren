@@ -3,15 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script data-ad-client="ca-pub-1675822216732625" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <title>
-        @if (this.ViewContext.RouteData.Values["controller"].ToString() == "Home")
-        {
-            @: Veli Yavuz Göçeren
-        }
-        else
-        {
-           @this.ViewContext.RouteData.Values["controller"].ToString()  @: | VYG
-        }
+        @ViewData["Title"]
     </title>
     @await Component.InvokeAsync("Metatags")
     <link href="~/Site/css/bootstrap.css" rel="stylesheet" />

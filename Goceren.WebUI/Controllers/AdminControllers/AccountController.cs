@@ -109,14 +109,14 @@ namespace Goceren.WebUI.Controllers.AdminControllers
                 return View(model);
             }
             var user = await _userManager.FindByEmailAsync(model.Email);
-            bool adminRole = await _userManager.IsInRoleAsync(user, "admin");
-            bool userRole = await _userManager.IsInRoleAsync(user, "user");
+            
             if (user == null)
             {
                 ModelState.AddModelError("", "Bu email ile daha önce hesap oluşturulmamış.");
                 return View(model);
             }
-
+            bool adminRole = await _userManager.IsInRoleAsync(user, "admin");
+            bool userRole = await _userManager.IsInRoleAsync(user, "user");
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 ModelState.AddModelError("", "Lütfen Email adresinizi onaylayınız.");

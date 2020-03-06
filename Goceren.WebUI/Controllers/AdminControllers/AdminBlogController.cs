@@ -180,6 +180,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> EditBlogAsync(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
         {
             var blogs = _blogService.GetById(entity.BlogId);
+            entity.ViewCount = blogs.ViewCount;
             if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);
@@ -380,6 +381,7 @@ namespace Goceren.WebUI.Controllers.AdminControllers
         public async Task<IActionResult> EditUserBlog(Blog entity, IFormFile file, IFormFile fileTwo, int[] categoryId)
         {
             var blogs = _blogService.GetById(entity.BlogId);
+            entity.ViewCount = blogs.ViewCount;
             if (file != null && file.ContentType.Contains("image"))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Site\\img\\Blog", file.FileName);

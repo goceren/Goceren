@@ -1,11 +1,7 @@
 ﻿@model PortfoliopageModels
-
-@{
-    ViewData["Title"] = "Index";
-
-}
 @if (Model.Portfoliopage != null)
 {
+    ViewData["Title"] = Model.Portfoliopage.PageTitle;
     <section class="pt-page pt-page-current" data-id="portfolio">
         <div class="section-inner custom-page-content">
             <div class="section-title-block second-style">
@@ -56,8 +52,8 @@
                                             </div>
 
                                             <i class="far fa-file-alt"></i>
-                                            <h4 class="name">@item.Name</h4>
-                                            <h4 class="name mt-3" style="font-size:10px">@item.Description</h4>
+                                            <h4 class="name mb">@item.Name</h4>
+                                            <h4 class="name mt-4" style="font-size:10px">@item.Description</h4>
                                             <span class="category">
                                                 @if (item.Language == null)
                                                 {

@@ -1,10 +1,9 @@
 ﻿@model MediumpageModels
-@{
-    ViewData["Title"] = "Detail"; 
-}
 @if (Model.Medium != null && Model.Mediumpage != null && Model.MediumCategories != null)
 {
     var item = Model.Medium.FirstOrDefault();
+    ViewData["Title"] = item.Title;
+    
     <div id="main-content" class="single-page-content">
         <div id="primary" class="content-area">
             <div id="content" class="page-content site-content" role="main">

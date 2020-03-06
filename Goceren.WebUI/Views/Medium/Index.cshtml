@@ -1,10 +1,7 @@
 ﻿@model MediumpageModels
-@{
-    ViewData["Title"] = "Blog";
-
-}
 @if (Model.Mediumpage != null)
 {
+    ViewData["Title"] = Model.Mediumpage.PageTitle; 
     <section class="pt-page pt-page-current" data-id="blog">
         <div class="section-inner custom-page-content">
             <div class="section-title-block second-style">

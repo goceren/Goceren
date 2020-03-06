@@ -1,9 +1,7 @@
 ﻿@model Resumepage
-@{
-    ViewData["Title"] = "Resume";
-}
 @if (Model != null)
-{
+{   
+    ViewData["Title"] = Model.ResumepageTitle;
     <section class="pt-page pt-page-current">
         <div class="section-inner custom-page-content">
             <div class="section-title-block second-style">

@@ -1,11 +1,8 @@
 ﻿@model HomepageModels
-@{
-    ViewData["Title"] = "Home - Veli Yavuz Göçeren";
-}
-
 <section class="pt-page pt-page-current" data-id="about-me">
     @if (Model.Homepage != null)
     {
+        ViewData["Title"] = Model.Homepage.Title;
         <div class="section-inner start-page-full-width">
             <div class="start-page-full-width">
                 <div class="row">
@@ -75,25 +72,25 @@
 
                                 @foreach (var tweet in Model.TweetsModel)
                                 {
-                                <div class="testimonial-item">
-                                    <div class="testimonial-content">
-                                        <div class="testimonial-text">
-                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName/status/@tweet.Id" target="_blank"><p>@tweet.Text</p></a>
+                                    <div class="testimonial-item">
+                                        <div class="testimonial-content">
+                                            <div class="testimonial-text">
+                                                <a href="https://twitter.com/@Model.TwitterModel.SceenName/status/@tweet.Id" target="_blank"><p>@tweet.Text</p></a>
+                                            </div>
+                                        </div>
+                                        <div class="testimonial-credits">
+                                            <div class="testimonial-picture">
+                                                <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><img src="@Model.TwitterModel.ProfileImage" alt="@Model.TwitterModel.Name" /></a>
+                                                <p class="testimonial-author">@tweet.CreatedDate</p>
+                                            </div>
+                                            <div class="testimonial-author-info">
+                                                <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank">
+                                                    <p class="testimonial-author">@Model.TwitterModel.Name</p>
+                                                </a>
+                                                <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><p class="testimonial-firm">@Model.TwitterModel.SceenName</p></a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="testimonial-credits">                                        
-                                        <div class="testimonial-picture">
-                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><img src="@Model.TwitterModel.ProfileImage" alt="@Model.TwitterModel.Name" /></a>
-                                            <p class="testimonial-author">@tweet.CreatedDate</p>
-                                        </div>
-                                        <div class="testimonial-author-info">
-                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank">
-                                                <p class="testimonial-author">@Model.TwitterModel.Name</p>
-                                            </a>
-                                            <a href="https://twitter.com/@Model.TwitterModel.SceenName" target="_blank"><p class="testimonial-firm">@Model.TwitterModel.SceenName</p></a>
-                                        </div>
-                                    </div>
-                                </div>
                                 }
                             </div>
                         }

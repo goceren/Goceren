@@ -1,10 +1,7 @@
 ﻿@model BlogpageModels
-@{
-    ViewData["Title"] = "Detail";
-
-}
 @if (Model.Blog != null)
 {
+    ViewData["Title"] = Model.Blog.BlogTitle;
     <div id="main-content" class="single-page-content">
         <div id="primary" class="content-area">
             <div id="content" class="page-content site-content" role="main">
